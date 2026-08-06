@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Newsletter from '../components/Newsletter.astro';
+import ContactBanner from '../components/ContactBanner.astro';
+---
+
+<Layout title="Contact">
+    <div class="wrapper">
+        <!-- Hero Section -->
+        <section class="contact-hero">
+            <div class="col1">
+                <h1>
+                    <span class="group">
+                        <span>Suivre la vie</span>
+                        <span>de la ferme</span>
+                    </span>
+                    <span class="group">
+                        <span>Garder le</span>
+                        <span>contact</span>
+                    </span>
+                </h1>
+            </div>
+            <div class="col2">
+                <img src="/contact-hero.jpg" alt="" />
+            </div>
+        </section>
+
+        <!-- Bandeau Newsletter -->
+        <Newsletter />
+
+        <!-- Bandeau Contact -->
+        <ContactBanner />
+    </div>
+</Layout>

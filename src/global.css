@@ -1,0 +1,1569 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600;700;800&display=swap');
+
+:root {
+    --color-primary: #136241;
+    --color-background: #F8FAF9;
+    --color-body: #09130F;
+    --color-body40W: #6B716F;
+    --color-primary-98w: #FAFCFB;
+    --color-white: #FFFFFF;
+    --border-radius: 4px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+html {
+    background-color: white;
+    color: var(--color-body);
+    font-family: 'Sora', sans-serif;
+}
+
+h1 {
+    font-size: 64px;
+    font-weight: 800;
+    color: var(--color-body);
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--color-body);
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-body);
+}
+
+.surtitle {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color-primary);
+}
+
+p {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color-body);
+}
+
+.bold {
+    font-weight: 600;
+}
+
+a {
+    color: var(--color-primary);
+}
+
+.highlight {
+    font-weight: 600;
+}
+
+.wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.background-image {
+    position: absolute;
+    z-index: -1;
+}
+
+.btn {
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    display: inline-flex;
+    padding: 16px;
+    background-color: var(--color-primary);
+    color: var(--color-white) !important;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    border: none;
+    width: fit-content;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-decoration: none !important;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* HERO SECTION */
+
+.hero {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+
+    height: fit-content;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    align-items: flex-start;
+}
+
+.hero .col2,
+.hero .col1 {
+    flex: 1;
+}
+
+.hero .col1 img {
+    width: 100%;
+    max-height: 720px;
+    object-fit: cover;
+}
+
+.hero .col2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.hero .line-separator {
+    width: 50%;
+    height: 1px;
+    background-color: var(--color-body40W);
+    margin: 16px 0;
+}
+
+.hero-subtitle {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.hero .col2 h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* LA BETHANIE SECTION */
+.la-bethanie {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+    gap: 24px;
+    height: fit-content;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.la-bethanie .col2 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.la-bethanie .background-image {
+    left: 0;
+    top: 0;
+}
+
+/* CARROUSSEL SECTION */
+.carroussel {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.carroussel .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 468px;
+    min-height: fit-content;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    padding: 16px;
+
+}
+
+.carroussel .card img {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+}
+
+.carroussel .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 60%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+
+
+.carroussel .card .content {
+    z-index: 10;
+    margin-top: auto;
+    width: 100%;
+}
+
+.carroussel .card .content * {
+    color: var(--color-white);
+}
+
+.carroussel .card .content i {
+
+    font-size: 40px;
+}
+
+.carroussel .card .content h2 {
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+
+
+}
+
+.carroussel .card .content p,
+.carroussel .card .content i {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+
+}
+
+.carroussel .card:hover .content * {
+    opacity: 1;
+    transform: translateY(0);
+
+}
+
+/* PARTENAIRES SECTION */
+.partenaire {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+}
+
+.partenaire .content {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    max-width: 800px;
+}
+
+.partenaire .content .logo-ccm {
+    max-width: 100%;
+    height: auto;
+}
+
+/* SE NOURRIR SECTION */
+.nourrir-hero {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+}
+
+.nourrir-hero .col1,
+.nourrir-hero .col2 {
+    flex: 1;
+}
+
+.nourrir-hero .col1 img {
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
+}
+
+.nourrir-hero .col2 {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* CE QUI POUSSE A LA FERME SECTION */
+.ca-pousse {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 40px;
+    border-radius: var(--border-radius);
+    align-items: center;
+    background-color: var(--color-background);
+    overflow: hidden;
+}
+
+.ca-pousse .content {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+}
+
+.ca-pousse .content .col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    text-align: center;
+}
+
+.ca-pousse .content .col h3 {
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 32px;
+}
+
+.AB {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding: 40px;
+}
+
+.AB .col1,
+.AB .col2 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.AB .col1 span {
+    font-weight: 600;
+}
+
+.AB .col1 ul {
+    padding-left: 16px;
+}
+
+.AB .col2 img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+/* PLUS QUE DES LEGUMES SECTION */
+.plus-que-des-legumes {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 40px;
+    padding: 40px;
+    border-radius: var(--border-radius);
+    align-items: center;
+}
+
+.plus-que-des-legumes .col1,
+.plus-que-des-legumes .col2 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.plus-que-des-legumes .col1 ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.plus-que-des-legumes .col1 li {
+    list-style: none;
+    padding: 8px;
+    background-color: var(--color-white);
+    box-shadow: 0px 0px 25px #13624108;
+    border-radius: var(--border-radius);
+}
+
+.plus-que-des-legumes .col2 img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+/* retrouvez nos legumes ailleurs SECTION */
+.retrouvez-nos-legumes-ailleurs {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 40px;
+    border-radius: var(--border-radius);
+    align-items: center;
+    background-color: var(--color-background);
+    position: relative;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.retrouvez-nos-legumes-ailleurs * {
+    z-index: 1;
+}
+
+.retrouvez-nos-legumes-ailleurs .row {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    max-width: 600px;
+}
+
+.retrouvez-nos-legumes-ailleurs .row .col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    text-align: center;
+}
+
+
+.retrouvez-nos-legumes-ailleurs .row .surtitle {
+    font-size: 12px;
+    color: var(--color-primary);
+}
+
+.retrouvez-nos-legumes-ailleurs .row span {
+    font-weight: 600;
+}
+
+.retrouvez-nos-legumes-ailleurs img {
+    z-index: 0;
+}
+
+.retrouvez-nos-legumes-ailleurs .carotte {
+    right: -5%;
+}
+
+.retrouvez-nos-legumes-ailleurs .laitue {
+    left: -5%;
+}
+
+/* NOS PARTENAIRES PRODUCTEURS SECTION */
+.producteurs-partenaire {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding: 40px;
+}
+
+.producteurs-partenaire .col1 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.producteurs-partenaire .col1 .row {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.producteurs-partenaire .col2 {
+    flex: 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.producteurs-partenaire .card-producteur {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.producteurs-partenaire .image-producteur {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin-bottom: 8px;
+}
+
+.producteurs-partenaire .societe {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-primary);
+}
+
+.producteurs-partenaire h3 {
+    text-transform: uppercase;
+}
+
+.producteurs-partenaire .localisation {
+    color: var(--color-body40W);
+}
+
+/* LA FERME - HERO SECTION */
+.ferme-hero {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+}
+
+.ferme-hero .col1,
+.ferme-hero .col2 {
+    flex: 1;
+}
+
+.ferme-hero .col1 h1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.ferme-hero .col2 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ferme-hero .col2 img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+/* LA FERME - EXPLICATION SECTION */
+.ferme-explication {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding: 40px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-background);
+}
+
+.ferme-explication .col1,
+.ferme-explication .col2 {
+    flex: 1;
+}
+
+.ferme-explication .col1 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ferme-explication .col1 img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+.ferme-explication .col2 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ferme-explication .col2 .list-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ferme-explication .col2 ul {
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* LA FERME - ESPACE TEST SECTION */
+.espace-test {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.espace-test h2 {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.espace-test .content {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+
+.espace-test .col1,
+.espace-test .col2 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.espace-test .col1 .list-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.espace-test .col1 ul {
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* LA FERME - EQUIPE SECTION */
+.equipe {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.equipe h2 {
+    text-align: center;
+}
+
+.equipe .equipe-description {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--color-body40W);
+}
+
+.membre-equipe {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    padding: 24px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-background);
+    overflow: hidden;
+}
+
+.membre-equipe .image-container {
+    position: relative;
+    z-index: 0;
+    width: 220px;
+    height: auto;
+    flex-shrink: 0;
+    align-self: stretch;
+}
+
+.membre-equipe .image-container .background-image {
+    position: absolute;
+    width: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.membre-equipe .image-container .photo {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+.membre-equipe .texte {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.membre-equipe h3 {
+    font-size: 32px;
+    text-transform: uppercase;
+}
+
+/* LA FERME - CITATION SECTION */
+.citation {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    padding: 80px 40px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-background);
+    overflow: hidden;
+}
+
+.citation p {
+    color: var(--color-primary);
+}
+
+.citation .citation-principale {
+    font-size: 24px;
+}
+
+.citation .citation-liste {
+    display: flex;
+    flex-direction: column;
+}
+
+.citation .background-image {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* L'ASSOCIATION - HERO SECTION */
+.association-hero h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+}
+
+.association-hero h1 img {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+.citation-association {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    padding: 80px 40px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-background);
+    overflow: hidden;
+}
+
+.citation-association .citation-liste,
+.citation-association .citation-conclusion {
+    display: flex;
+    flex-direction: column;
+}
+
+.citation-association .background-image {
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
+.projet {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+}
+
+.projet .col1,
+.projet .col2 {
+    flex: 1;
+}
+
+.projet .col1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+.projet .col2 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.projet .col2 .list-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.projet .col2 ul {
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.aventure-collective {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+}
+
+.aventure-collective .col1,
+.aventure-collective .col2 {
+    flex: 1;
+}
+
+.aventure-collective .col1 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.aventure-collective .col1 .list-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.aventure-collective .col1 ul {
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.aventure-collective .col1 a {
+    text-decoration: underline;
+}
+
+.easter-egg {
+    cursor: text;
+}
+
+.aventure-collective .col2 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+.helloasso {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    align-items: center;
+    padding: 24px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-background);
+}
+
+.helloasso .col1 {
+    flex-shrink: 0;
+    width: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-white);
+}
+
+.helloasso .col1 img {
+    width: 100%;
+    height: auto;
+}
+
+.helloasso .col2 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+/* L'AGENDA - HERO SECTION */
+.agenda-hero {
+    display: grid;
+    height: 620px;
+    overflow: hidden;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 24px;
+}
+
+.agenda-hero h1 {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 0;
+    overflow: hidden;
+    font-size: clamp(40px, 3.4vw + 23px, 64px);
+}
+
+.agenda-hero img {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+.agenda-hero .img1 {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.agenda-hero .img2 {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.agenda-hero .img3 {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.agenda-hero .img4 {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.agenda-hero .img5 {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.agenda-hero .small-images {
+    grid-column: 1;
+    grid-row: 3;
+    display: flex;
+    gap: 24px;
+    min-height: 0;
+}
+
+.agenda-hero .small-images img {
+    flex: 1;
+    min-width: 0;
+}
+
+.organisons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.organisons .ligne {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+}
+
+.organisons .label {
+    flex-shrink: 0;
+    width: 340px;
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--color-body);
+}
+
+.organisons .item {
+    font-size: 32px;
+    text-transform: uppercase;
+    color: var(--color-primary);
+}
+
+.organisons .ligne:nth-child(1) .label {
+    opacity: 1;
+}
+
+.organisons .ligne:nth-child(2) .label {
+    opacity: 0.82;
+}
+
+.organisons .ligne:nth-child(3) .label {
+    opacity: 0.64;
+}
+
+.organisons .ligne:nth-child(4) .label {
+    opacity: 0.46;
+}
+
+.organisons .ligne:nth-child(5) .label {
+    opacity: 0.32;
+}
+
+.organisons .ligne:nth-child(6) .label {
+    opacity: 0.2;
+}
+
+.organisons .ligne:nth-child(7) .label {
+    opacity: 0.12;
+}
+
+/* CONTACT - HERO SECTION */
+.contact-hero {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    height: 480px;
+}
+
+.contact-hero .col1,
+.contact-hero .col2 {
+    flex: 1;
+}
+
+.contact-hero .col1 h1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.contact-hero .col1 .group {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-hero .col2 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+/* PROCHAINS EVENEMENTS */
+.prochains-evenements {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.prochains-evenements #evenements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+    max-width: 800px;
+    align-self: center;
+}
+
+.prochains-evenements .evenement {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 24px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-background);
+    text-decoration: none;
+}
+
+.prochains-evenements .evenement .date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.prochains-evenements .evenement .date .jour {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--color-body);
+}
+
+.prochains-evenements .evenement .date .mois {
+    font-size: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--color-body);
+}
+
+.prochains-evenements .evenement .details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.prochains-evenements .evenement .heures {
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.prochains-evenements .evenement .titre {
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.prochains-evenements .evenement .image {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    flex-shrink: 0;
+}
+
+.prochains-evenements .evenement .ph-caret-right {
+    font-size: 20px;
+    color: var(--color-body);
+    flex-shrink: 0;
+}
+
+.prochains-evenements .voir-tous {
+    align-self: center;
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+.invitation {
+    text-align: center;
+}
+
+.invitation p {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* RESPONSIVE - PAGE INDEX */
+@media (max-width: 900px) {
+    .wrapper {
+        gap: 48px;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .hero {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 60vh;
+    }
+
+    .hero .col1 {
+        display: none;
+    }
+
+    .hero .col2 {
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero .col2 h1 {
+        align-items: center;
+    }
+
+    .hero .line-separator {
+        align-self: center;
+    }
+
+    .la-bethanie {
+        flex-direction: column;
+    }
+
+    .la-bethanie .col1 {
+        width: 100%;
+    }
+
+    .la-bethanie .col1 img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+
+    .la-bethanie .background-image {
+        display: none;
+    }
+
+    .carroussel {
+        flex-direction: column;
+    }
+
+    .carroussel .card {
+        flex-direction: row-reverse;
+        align-items: center;
+        gap: 24px;
+        height: auto;
+        min-height: 200px;
+        background-color: var(--color-white);
+    }
+
+    .carroussel .card::before {
+        display: none;
+    }
+
+    .carroussel .card img {
+        position: static;
+        width: 30%;
+        height: 160px;
+        flex-shrink: 0;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+    }
+
+    .carroussel .card .content {
+        width: 70%;
+        margin-top: 0;
+    }
+
+    .carroussel .card .content * {
+        color: var(--color-body);
+    }
+
+    .carroussel .card .content h2,
+    .carroussel .card .content p,
+    .carroussel .card .content i {
+        opacity: 1;
+        transform: none;
+    }
+
+    .partenaire .content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 700px) {
+    .hero .col2 h1,
+    .nourrir-hero h1,
+    .ferme-hero h1,
+    .association-hero h1,
+    .contact-hero h1 {
+        font-size: 40px;
+    }
+
+    .carroussel .card img {
+        display: none;
+    }
+
+    .carroussel .card {
+        background-color: var(--color-background);
+    }
+
+    .carroussel .card .content {
+        width: 100%;
+    }
+}
+
+/* RESPONSIVE - PAGE SE NOURRIR */
+@media (max-width: 900px) {
+    .nourrir-hero {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nourrir-hero .col1 {
+        width: 100%;
+    }
+
+    .nourrir-hero .col1 img {
+        width: 100%;
+        max-height: 200px;
+        border-radius: var(--border-radius);
+    }
+
+    .nourrir-hero .col2 {
+        gap: 16px;
+    }
+
+    .retrouvez-nos-legumes-ailleurs .carotte {
+        right: -140px;
+        width: 220px;
+    }
+
+    .retrouvez-nos-legumes-ailleurs .laitue {
+        left: -140px;
+        width: 220px;
+    }
+
+    .AB {
+        flex-direction: column;
+    }
+
+    .AB .col2 img {
+        width: 100%;
+        max-height: 300px;
+    }
+
+    .plus-que-des-legumes {
+        flex-direction: column;
+    }
+
+    .plus-que-des-legumes .col1,
+    .plus-que-des-legumes .col2 {
+        width: 100%;
+    }
+
+    .plus-que-des-legumes .col2 img {
+        width: 100%;
+        max-height: 300px;
+    }
+
+    .ca-pousse .content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+
+    .producteurs-partenaire {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 500px) {
+    .organisons .item {
+        font-size: 24px;
+    }
+
+    .ca-pousse .content {
+        grid-template-columns: 1fr;
+    }
+
+    .producteurs-partenaire .col2 {
+        grid-template-columns: 1fr;
+    }
+
+    /* RESPONSIVE - GENERAL: PADDING DES CONTENEURS */
+    .la-bethanie,
+    .ca-pousse,
+    .AB,
+    .plus-que-des-legumes,
+    .retrouvez-nos-legumes-ailleurs,
+    .producteurs-partenaire,
+    .ferme-explication,
+    .espace-test,
+    .citation,
+    .citation-association,
+    .helloasso {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 700px) {
+    .retrouvez-nos-legumes-ailleurs .row {
+        flex-direction: column;
+    }
+}
+
+/* RESPONSIVE - PAGE LA FERME */
+@media (max-width: 900px) {
+    .ferme-explication {
+        flex-direction: column;
+    }
+
+    .ferme-explication .col1 {
+        flex-direction: row;
+    }
+
+    .ferme-explication .col1 img {
+        width: 100%;
+        height: 140px;
+        min-width: 0;
+    }
+
+    .membre-equipe .image-container {
+        align-self: flex-start;
+        aspect-ratio: 3 / 4;
+        height: auto;
+    }
+}
+
+@media (max-width: 700px) {
+    .espace-test .content {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 700px) {
+    .membre-equipe {
+        flex-direction: column;
+    }
+
+    .membre-equipe .image-container {
+        width: auto;
+        height: 300px;
+        aspect-ratio: 3 / 4;
+    }
+
+    .membre-equipe .image-container .background-image {
+        top: 0;
+        left: -5%;
+        opacity: 0.3;
+        transform: none;
+    }
+}
+
+@media (max-width: 500px) {
+    .ferme-hero {
+        flex-direction: column-reverse;
+    }
+
+    .ferme-hero .col1 h1 {
+        display: block;
+    }
+
+    .ferme-hero .col2 {
+        flex-direction: row;
+    }
+
+    .ferme-hero .col2 img {
+        width: 100%;
+        flex: 1;
+        min-width: 0;
+        height: 80px;
+        object-fit: cover;
+    }
+}
+
+/* RESPONSIVE - PAGE AGENDA */
+@media (max-width: 1200px) {
+    .agenda-hero {
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
+    }
+}
+
+/* RESPONSIVE - PAGE ASSOCIATION */
+@media (max-width: 700px) {
+    .projet {
+        flex-direction: column;
+    }
+
+    .projet .col1,
+    .projet .col2 {
+        width: 100%;
+    }
+
+    .projet .col1 img {
+        max-height: 300px;
+    }
+
+    .aventure-collective {
+        flex-direction: column-reverse;
+    }
+
+    .aventure-collective .col1,
+    .aventure-collective .col2 {
+        width: 100%;
+    }
+
+    .aventure-collective .col2 img {
+        max-height: 300px;
+    }
+
+    .helloasso {
+        flex-direction: column;
+    }
+
+    .helloasso .col1,
+    .helloasso .col2 {
+        width: 100%;
+    }
+
+    .helloasso .col1 img {
+        max-height: 300px;
+    }
+}
+
+.agenda-hero .conclusion {
+    grid-column: 2 / 4;
+    grid-row: 3;
+    display: flex;
+    align-items: center;
+    font-size: clamp(40px, 3.4vw + 23px, 64px);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+@media (max-width: 700px) {
+    .agenda-hero .img1,
+    .agenda-hero .img2,
+    .agenda-hero .small-images {
+        display: none;
+    }
+
+    .agenda-hero {
+        height: auto;
+        grid-template-rows: auto 150px auto;
+    }
+
+    .agenda-hero h1,
+    .agenda-hero .conclusion {
+        grid-column: 1 / 4;
+    }
+
+    .agenda-hero .conclusion {
+        justify-content: flex-end;
+        text-align: right;
+    }
+
+    .organisons .ligne {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .organisons .label,
+    .organisons .item {
+        width: auto;
+        text-align: center;
+    }
+
+    .contact-hero {
+        flex-direction: column-reverse;
+        height: auto;
+        align-items: center;
+    }
+
+    .contact-hero .col1 {
+        width: 100%;
+        text-align: center;
+    }
+
+    .contact-hero .col1 h1 {
+        height: auto;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .contact-hero .col1 .group {
+        display: block;
+    }
+
+    .contact-hero .col2 {
+        width: 100%;
+    }
+
+    .contact-hero .col2 img {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+    }
+}

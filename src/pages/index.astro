@@ -1,17 +1,215 @@
 ---
-
+import Layout from "../layouts/Layout.astro";
+import SellDisplay from "../components/SellDisplay.astro";
+import Newsletter from "../components/Newsletter.astro";
+import ContactBanner from "../components/ContactBanner.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Accueil">
+    <div class="wrapper">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="col1">
+                <img src="/hero-image.jpg" alt="Image d'accueil" />
+            </div>
+            <a
+                href="https://www.helloasso.com/associations/la-bethanie/adhesions/commande-de-legumes"
+                class="btn floating-order-btn"
+                id="floating-order-btn"
+                target="_blank"
+            >
+                Commander mon panier <i class="ph ph-arrow-up-right"></i>
+            </a>
+            <div class="col2">
+                <h1>
+                    <span>ferme</span>
+                    <span>maraîchère,</span>
+                    <span>association </span>
+                    <span>culturelle,</span>
+                    <span>paysanne et</span>
+                    <span>festive</span>
+                </h1>
+                <div class="line-separator"></div>
+                <p class="hero-subtitle">saint-morillon, 33650 france</p>
+            </div>
+        </section>
+
+        <!-- Où trouver nos légumes Section -->
+        <SellDisplay />
+
+        <!-- La Béthanie Section -->
+        <section class="la-bethanie" id="la-bethanie">
+            <div class="col1">
+                <img src="/la-bethanie.jpg" alt="La Béthanie" />
+            </div>
+            <div class="col2">
+                <div class="title-section">
+                    <p class="surtitle">
+                        Ferme maraîchère et lieu de vie à Saint-Morillon
+                    </p>
+                    <h2>La Béthanie</h2>
+                </div>
+
+                <p>
+                    La Béthanie est une ferme maraîchère biologique installée au
+                    cœur du village.On y cultive des légumes de saison, on y
+                    accueille du monde, on y partage des repas, des idées, des
+                    fêtes et des savoir-faire. C’est aussi un <span
+                        class="highlight"
+                    >
+                        espace test agricole</span
+                    > porté par la Communauté de Communes de Montesquieu : un lieu
+                    pour expérimenter, apprendre, transmettre et faire naître des
+                    projets agricoles durables.
+                </p>
+
+                <a href="" target="_blank">En savoir plus</a>
+            </div>
+            <img
+                src="/bethanie-background-chou.jpg"
+                alt=""
+                class="background-image"
+            />
+        </section>
+
+        <!-- Carroussel Section -->
+        <section class="carroussel">
+            <a href="" class="card">
+                <div class="content">
+                    <h2>Se nourrir</h2>
+                    <p>
+                        À La Béthanie, on ne vient pas seulement acheter des
+                        légumes.On vient chercher des produits cultivés avec
+                        soin, au rythme des saisons, ancrés dans un territoire
+                        vivant.
+                    </p>
+                    <i class="ph ph-arrow-right"></i>
+                </div>
+
+                <img src="/se-nourrir.jpg" alt="Image 1" />
+            </a>
+            <a href="" class="card">
+                <div class="content">
+                    <h2>La ferme</h2>
+                    <p>
+                        La Béthanie est une ferme maraîchère biologique
+                        installée sur un ancien couvent et site agricole du
+                        village. Découvrez notre histoire et celle de cet
+                        endroit unique.
+                    </p>
+                    <i class="ph ph-arrow-right"></i>
+                </div>
+                <img src="/la-ferme.jpg" alt="Image 2" />
+            </a>
+            <a href="" class="card">
+                <div class="content">
+                    <h2>L'association</h2>
+                    <p>
+                        L’association La Béthanie vous accueille à la ferme pour
+                        des guinguettes, concerts, visites et bien d’autres
+                        évènements qui mettent en valeur cette belle ferme.
+                    </p>
+                    <i class="ph ph-arrow-right"></i>
+                </div>
+                <img src="/association.jpg" alt="Image 3" />
+            </a>
+        </section>
+
+        <!-- Bandeau Newsletter -->
+        <Newsletter />
+
+        <!-- Carnets Paysans A INSERER   -->
+
+        <!-- Partenaire -->
+        <section class="partenaire">
+            <h2>Nos partenaires</h2>
+            <div class="content">
+                <div class="col1">
+                    <img
+                        src="/logo-ccm.jpg"
+                        alt=""
+                        class="logo-ccm"
+                    />
+                </div>
+                <div class="col2">
+                    <p>
+                        La Béthanie est un espace test agricole porté par la
+                        <a
+                            href="https://www.cc-montesquieu.fr/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Communauté de Communes de Montesquieu
+                        </a>
+                        . <br /> Ce dispositif nous permet de lancer notre activité
+                        de maraîchage dans un cadre sécurisé, avec des ressources
+                        mise à disposition par la Communauté de Communes et de pouvoir
+                        bénéficier d’un accompagnement personnalisé et adapté. Dans
+                        cet objectif, la Communauté de Communes met à disposition
+                        les parcelles agricoles, le bâtiment ainsi que les installations
+                        et tout le gros matériel nécessaires pour du maraichage.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Banner -->
+        <ContactBanner />
+    </div>
+</Layout>
+
+<style>
+    .floating-order-btn {
+        position: fixed;
+        left: 50%;
+        bottom: 24px;
+        z-index: 999;
+        opacity: 0;
+        transform: translate(-50%, 24px);
+        pointer-events: none;
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease;
+    }
+
+    .floating-order-btn.visible {
+        opacity: 1;
+        transform: translate(-50%, 0);
+        pointer-events: auto;
+    }
+</style>
+
+<script>
+    const floatingButton =
+        document.querySelector<HTMLElement>("#floating-order-btn")!;
+    const sellDisplay = document.querySelector<HTMLElement>(".bandeau-vente");
+
+    let sellDisplayVisible = false;
+    let readyToShow = false;
+
+    function updateFloatingButton() {
+        const shouldShow =
+            readyToShow && window.scrollY === 0 && !sellDisplayVisible;
+        floatingButton.classList.toggle("visible", shouldShow);
+    }
+
+    if (sellDisplay) {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                sellDisplayVisible = entry.isIntersecting;
+                updateFloatingButton();
+            },
+            { threshold: 0.15 },
+        );
+        observer.observe(sellDisplay);
+    }
+
+    window.addEventListener("scroll", updateFloatingButton, { passive: true });
+
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            readyToShow = true;
+            updateFloatingButton();
+        }, 2000);
+    });
+</script>

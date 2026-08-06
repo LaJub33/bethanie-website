@@ -1,0 +1,287 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="L'association">
+    <div class="wrapper">
+        <!-- Hero Section -->
+        <section class="association-hero">
+            <h1>
+                <span>Cultiver</span>
+                <img src="/association-hero.jpg" alt="" />
+                <span>Le lien</span>
+            </h1>
+        </section>
+
+        <!-- Citation Section -->
+        <section class="citation-association">
+            <img
+                src="/wavy-line-vertical.svg"
+                alt=""
+                class="background-image"
+            />
+            <p>
+                Autour de la ferme est née l'association La Béthanie – une
+                association culturelle, paysanne &amp; festive.
+            </p>
+            <div class="citation-liste">
+                <p>Une envie simple :</p>
+                <p>
+                    faire de ce lieu un espace où l'on ne vient pas seulement
+                    acheter des légumes,
+                </p>
+                <p>mais aussi passer du temps, rencontrer, apprendre, célébrer.</p>
+            </div>
+            <div class="citation-conclusion">
+                <p>La ferme cultive la terre.</p>
+                <p>L'association cultive le lien.</p>
+            </div>
+        </section>
+
+        <!-- Prochains évènements Section -->
+        <section class="prochains-evenements">
+            <h2>Nos prochains évènements</h2>
+            <p>
+                Nous organisons tout au long de l'année des évènements
+                culturels, festifs et pédagogiques dans le but de faire vivre
+                ce lieu et proposer une véritable expérience à toutes et à
+                tous.
+            </p>
+
+            <div id="evenements-list"></div>
+
+            <a href="/l-agenda" class="voir-tous">Voir tous les évènements</a>
+        </section>
+
+        <!-- Projet Section -->
+        <section class="projet">
+            <div class="col1">
+                <img src="/projet.jpg" alt="" />
+            </div>
+            <div class="col2">
+                <h2>Un projet pour faire vivre le territoire</h2>
+                <p>
+                    L'association œuvre à dynamiser la Communauté de Communes
+                    de Montesquieu en tissant des ponts entre agriculture,
+                    culture et engagement citoyen.
+                </p>
+                <p>
+                    Repas fermiers, guinguettes d'été, concerts, spectacles,
+                    chantiers participatifs, ateliers, visites…
+                    <br />
+                    Autant d'occasions de découvrir le lieu autrement, de
+                    sensibiliser à l'alimentation bio et locale, et de faire
+                    de Béthanie un espace ouvert et vivant.
+                </p>
+                <div class="list-block">
+                    <p>Depuis sa création, l'association a déjà :</p>
+                    <ul>
+                        <li>organisé l'inauguration de la ferme</li>
+                        <li>lancé les Vendredis Guinguette</li>
+                        <li>
+                            accueilli des chantiers participatifs et des repas
+                            fermiers
+                        </li>
+                        <li>aménagé et valorisé certains espaces du site</li>
+                        <li>collaboré avec des artistes et associations voisines</li>
+                    </ul>
+                </div>
+                <p>Petit à petit, le lieu s'anime.</p>
+            </div>
+        </section>
+
+        <!-- Bureau Section -->
+        <section class="equipe">
+            <h2>Le bureau</h2>
+            <p class="equipe-description">
+                L'association La Béthanie existant au sein de la ferme, le
+                bureau est par défaut constitué des maraîchers et
+                maraîchères de La Béthanie. Pour compléter le travail de
+                l'association, deux membres du bureau sont externes à la
+                ferme.
+            </p>
+
+            <article class="membre-equipe">
+                <div class="image-container">
+                    <img
+                        src="/background-carotte.svg"
+                        alt=""
+                        class="background-image"
+                    />
+                    <img src="/ThomasJ.jpg" alt="" class="photo" />
+                </div>
+                <div class="texte">
+                    <h3>Thomas Jubin</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit, sed diam nonummy nibh euismod tincidunt ut
+                        laoreet dolore magna aliquam erat volutpat. Ut wisi
+                        enim ad minim veniam, quis nostrud exerci tation
+                        ullamcorper suscipit lobortis nisl ut aliquip ex ea
+                        commodo consequat.
+                    </p>
+                    <p>
+                        Duis autem vel eum iriure dolor in hendrerit in
+                        vulputate velit esse molestie consequat, vel illum
+                        dolore eu feugiat nulla facilisis at vero eros et
+                        accumsan et iusto odio dignissim qui blandit
+                        praesent luptatum zzril delenit augue duis dolore te
+                        feugait nulla facilisi.
+                    </p>
+                </div>
+            </article>
+
+            <article class="membre-equipe">
+                <div class="image-container">
+                    <img
+                        src="/background-carotte.svg"
+                        alt=""
+                        class="background-image"
+                    />
+                    <img src="/Marika.jpg" alt="" class="photo" />
+                </div>
+                <div class="texte">
+                    <h3>Marie Capucine Ducellier</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit, sed diam nonummy nibh euismod tincidunt ut
+                        laoreet dolore magna aliquam erat volutpat. Ut wisi
+                        enim ad minim veniam, quis nostrud exerci tation
+                        ullamcorper suscipit lobortis nisl ut aliquip ex ea
+                        commodo consequat.
+                    </p>
+                    <p>
+                        Duis autem vel eum iriure dolor in hendrerit in
+                        vulputate velit esse molestie consequat, vel illum
+                        dolore eu feugiat nulla facilisis at vero eros et
+                        accumsan et iusto odio dignissim qui blandit
+                        praesent luptatum zzril delenit augue duis dolore te
+                        feugait nulla facilisi.
+                    </p>
+                </div>
+            </article>
+        </section>
+
+        <!-- Aventure Collective Section -->
+        <section class="aventure-collective">
+            <div class="col1">
+                <h2>Une aventure collective</h2>
+                <p>
+                    Aujourd'hui, une cinquantaine d'adhérent·es soutiennent
+                    le projet.
+                </p>
+                <div class="list-block">
+                    <p>Adhérer, c'est permettre :</p>
+                    <ul>
+                        <li>la rémunération juste des artistes</li>
+                        <li>l'organisation d'événements accessibles</li>
+                        <li>
+                            le développement d'une agriculture locale
+                            engagée
+                        </li>
+                    </ul>
+                </div>
+                <p>
+                    C'est aussi pouvoir prendre part : <span
+                        class="easter-egg"
+                        data-href="/insertion">donner un coup de
+                    main</span>, proposer une idée, tenir une buvette, cuisiner,
+                    bricoler, rêver.
+                </p>
+                <p>
+                    La Béthanie est un lieu en mouvement. <br />
+                    Un lieu où l'on cultive autant les légumes que les
+                    rencontres.
+                </p>
+                <a
+                    href="https://www.helloasso.com/associations/la-bethanie-association/adhesions/adhesion-2026"
+                    target="_blank"
+                >Rejoignez nous.</a>
+            </div>
+            <div class="col2">
+                <img src="/Collectif.jpg" alt="" />
+            </div>
+        </section>
+
+        <!-- HelloAsso Section -->
+        <section class="helloasso">
+            <div class="col1">
+                <img src="/Helloasso.jpg" alt="HelloAsso" />
+            </div>
+            <div class="col2">
+                <h2>La Béthanie est sur Hello Asso</h2>
+                <p>
+                    Nous organisons de nombreux évènements pour toutes et
+                    tous avec certains évènements réservés aux adhérents de
+                    l'association !
+                    <br />
+                    Alors n'attendez plus et prenez votre adhésion sur Hello
+                    Asso !
+                </p>
+                <a
+                    href="https://www.helloasso.com/associations/la-bethanie-association/adhesions/adhesion-2026"
+                    class="btn"
+                    target="_blank"
+                >
+                    Adhérer sur Hello Asso <i class="ph ph-arrow-up-right"></i>
+                </a>
+            </div>
+        </section>
+    </div>
+</Layout>
+
+<script>
+    document
+        .querySelectorAll<HTMLElement>(".easter-egg[data-href]")
+        .forEach((el) => {
+            el.addEventListener("click", () => {
+                window.location.href = el.dataset.href!;
+            });
+        });
+</script>
+
+<script>
+    import { supabase } from "../lib/supabase.js";
+
+    const eventsList =
+        document.querySelector<HTMLElement>("#evenements-list")!;
+
+    const { data, error } = await supabase
+        .from("evenements")
+        .select("*")
+        .gte("date", new Date().toISOString().slice(0, 10))
+        .order("date", { ascending: true })
+        .limit(3);
+
+    if (error || !data) {
+        eventsList.remove();
+    } else {
+        for (const evenement of data) {
+            const date = new Date(`${evenement.date}T00:00:00`);
+            const jour = date.toLocaleDateString("fr-FR", { day: "numeric" });
+            const mois = date.toLocaleDateString("fr-FR", { month: "short" });
+
+            const row = document.createElement(evenement.lien ? "a" : "div");
+            row.className = "evenement";
+            if (evenement.lien) {
+                (row as HTMLAnchorElement).href = evenement.lien;
+                (row as HTMLAnchorElement).target = "_blank";
+            }
+
+            row.innerHTML = `
+                <div class="date">
+                    <span class="jour">${jour}</span>
+                    <span class="mois">${mois}</span>
+                </div>
+                <div class="details">
+                    <span class="heures">${evenement.heure_debut.slice(0, 5)} – ${evenement.heure_fin.slice(0, 5)}</span>
+                    <span class="titre">${evenement.titre}</span>
+                </div>
+                ${evenement.image ? `<img src="${evenement.image}" alt="" class="image" />` : ""}
+                <i class="ph ph-caret-right"></i>
+            `;
+
+            eventsList.appendChild(row);
+        }
+    }
+</script>

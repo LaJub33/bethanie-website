@@ -1,0 +1,164 @@
+---
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
+
+const navItems = [
+    { href: "/", label: "Accueil", match: "/" },
+    { href: "/se-nourrir", label: "Se nourrir", match: "/se-nourrir" },
+    { href: "/la-ferme", label: "La ferme", match: "/la-ferme" },
+    { href: "/l-association", label: "L'association", match: "/l-association" },
+    { href: "/l-agenda", label: "L'agenda", match: "/l-agenda" },
+    { href: "/contact", label: "Contact", match: "/contact" },
+];
+---
+
+<header>
+    <div class="logo-container">
+        <a href="/"
+            ><img
+                src="/logo-text-only.svg"
+                alt="Logo de Bethanie"
+            /></a
+        >
+    </div>
+    <button
+        class="hamburger"
+        id="hamburger-btn"
+        aria-label="Menu"
+        aria-expanded="false"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="nav-container" id="nav-container">
+        <nav>
+            <ul>
+                {
+                    navItems.map((item) => (
+                        <li>
+                            <a
+                                href={item.href}
+                                class={pathname === item.match ? "active" : undefined}
+                            >
+                                {item.label}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </nav>
+    </div>
+
+    <style>
+        /* HEADER */
+        header {
+            width: 100%;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px;
+            background-color: #fafcfb;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--color-body);
+            font-size: 16px;
+        }
+
+        nav ul li a.active {
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--color-body);
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .hamburger[aria-expanded="true"] span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger[aria-expanded="true"] span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger[aria-expanded="true"] span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        @media (max-width: 900px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-container {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: #fafcfb;
+                padding: 24px 40px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+            }
+
+            .nav-container.open {
+                display: block;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
+
+    <script>
+        const hamburgerBtn =
+            document.querySelector<HTMLButtonElement>("#hamburger-btn")!;
+        const navContainer =
+            document.querySelector<HTMLElement>("#nav-container")!;
+
+        hamburgerBtn.addEventListener("click", () => {
+            const isOpen = navContainer.classList.toggle("open");
+            hamburgerBtn.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        navContainer.querySelectorAll("a").forEach((link) => {
+            link.addEventListener("click", () => {
+                navContainer.classList.remove("open");
+                hamburgerBtn.setAttribute("aria-expanded", "false");
+            });
+        });
+    </script>
+</header>

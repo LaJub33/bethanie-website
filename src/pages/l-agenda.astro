@@ -1,0 +1,122 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="L'agenda">
+    <div class="wrapper">
+        <!-- Hero Section -->
+        <section class="agenda-hero">
+            <h1>Ce qui se passe à la Béthanie…</h1>
+            <img src="/agenda-hero07.jpg" alt="" class="img1" />
+            <img src="/agenda-hero06.jpg" alt="" class="img2" />
+            <img src="/agenda-hero05.jpg" alt="" class="img3" />
+            <img src="/agenda-hero04.jpg" alt="" class="img4" />
+            <img src="/agenda-hero03.jpg" alt="" class="img5" />
+            <div class="small-images">
+                <img src="/agenda-hero02.jpg" alt="" />
+                <img src="/agenda-hero01.jpg" alt="" />
+            </div>
+            <p class="conclusion">…se partage à la Béthanie</p>
+        </section>
+
+        <!-- Organisons Section -->
+        <section class="organisons">
+            <div class="ligne">
+                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="item">Cinémas plein air</p>
+            </div>
+            <div class="ligne">
+                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="item">Spectacles</p>
+            </div>
+            <div class="ligne">
+                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="item">Guinguettes</p>
+            </div>
+            <div class="ligne">
+                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="item">Ventes festives</p>
+            </div>
+            <div class="ligne">
+                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="item">Repas fermiers</p>
+            </div>
+            <div class="ligne">
+                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="item">Chantiers</p>
+            </div>
+            <div class="ligne">
+                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="item">Évènements pour toutes et tous !</p>
+            </div>
+        </section>
+
+        <!-- Invitation Section -->
+        <section class="invitation">
+            <p>
+                Chaque événement est une invitation à venir découvrir le
+                lieu autrement, <br />
+                à rencontrer celles et ceux qui le font vivre, <br />
+                à partager un moment simple, joyeux, ouvert
+            </p>
+        </section>
+
+        <!-- Prochains évènements Section -->
+        <section class="prochains-evenements">
+            <h2>Nos prochains évènements</h2>
+            <p>
+                Nous organisons tout au long de l'année des évènements
+                culturels, festifs et pédagogiques dans le but de faire vivre
+                ce lieu et proposer une véritable expérience à toutes et à
+                tous.
+            </p>
+
+            <div id="evenements-list"></div>
+        </section>
+    </div>
+</Layout>
+
+<script>
+    import { supabase } from "../lib/supabase.js";
+
+    const eventsList =
+        document.querySelector<HTMLElement>("#evenements-list")!;
+
+    const { data, error } = await supabase
+        .from("evenements")
+        .select("*")
+        .gte("date", new Date().toISOString().slice(0, 10))
+        .order("date", { ascending: true });
+
+    if (error || !data) {
+        eventsList.remove();
+    } else {
+        for (const evenement of data) {
+            const date = new Date(`${evenement.date}T00:00:00`);
+            const jour = date.toLocaleDateString("fr-FR", { day: "numeric" });
+            const mois = date.toLocaleDateString("fr-FR", { month: "short" });
+
+            const row = document.createElement(evenement.lien ? "a" : "div");
+            row.className = "evenement";
+            if (evenement.lien) {
+                (row as HTMLAnchorElement).href = evenement.lien;
+                (row as HTMLAnchorElement).target = "_blank";
+            }
+
+            row.innerHTML = `
+                <div class="date">
+                    <span class="jour">${jour}</span>
+                    <span class="mois">${mois}</span>
+                </div>
+                <div class="details">
+                    <span class="heures">${evenement.heure_debut.slice(0, 5)} – ${evenement.heure_fin.slice(0, 5)}</span>
+                    <span class="titre">${evenement.titre}</span>
+                </div>
+                ${evenement.image ? `<img src="${evenement.image}" alt="" class="image" />` : ""}
+                <i class="ph ph-caret-right"></i>
+            `;
+
+            eventsList.appendChild(row);
+        }
+    }
+</script>

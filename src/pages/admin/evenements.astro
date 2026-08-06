@@ -1,0 +1,277 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Administration - Évènements">
+    <div class="wrapper">
+        <section class="admin-evenements">
+            <h1>Administration des évènements</h1>
+
+            <form id="login-form">
+                <input type="email" name="email" placeholder="Email" required />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Mot de passe"
+                    required
+                />
+                <button type="submit" class="btn">Se connecter</button>
+                <p id="login-error" class="error" hidden></p>
+            </form>
+
+            <div id="admin-panel" hidden>
+                <div id="logged-in-as">
+                    <p>Connecté en tant que <strong id="admin-email"></strong></p>
+                    <button type="button" id="logout-button">Se déconnecter</button>
+                </div>
+
+                <h2>Ajouter un évènement</h2>
+                <form id="add-event-form">
+                    <div class="field">
+                        <label for="event-date">Date</label>
+                        <input id="event-date" type="date" name="date" required />
+                    </div>
+                    <div class="field">
+                        <label for="event-heure-debut">Heure de début</label>
+                        <input
+                            id="event-heure-debut"
+                            type="time"
+                            name="heure_debut"
+                            required
+                        />
+                    </div>
+                    <div class="field">
+                        <label for="event-heure-fin">Heure de fin</label>
+                        <input
+                            id="event-heure-fin"
+                            type="time"
+                            name="heure_fin"
+                            required
+                        />
+                    </div>
+                    <div class="field">
+                        <label for="event-titre">Titre de l'évènement</label>
+                        <input id="event-titre" type="text" name="titre" required />
+                    </div>
+                    <div class="field">
+                        <label for="event-lien">Lien (optionnel)</label>
+                        <input id="event-lien" type="url" name="lien" />
+                    </div>
+                    <div class="field">
+                        <label for="event-image">Image (optionnel)</label>
+                        <input
+                            id="event-image"
+                            type="file"
+                            name="image"
+                            accept="image/*"
+                        />
+                    </div>
+                    <button type="submit" class="btn">Ajouter</button>
+                </form>
+
+                <h2>Évènements à venir</h2>
+                <div id="events-list"></div>
+            </div>
+        </section>
+    </div>
+</Layout>
+
+<style is:global>
+    .admin-evenements {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        max-width: 600px;
+    }
+
+    #login-form:not([hidden]),
+    #add-event-form:not([hidden]) {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    #logged-in-as {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    #login-form input,
+    #add-event-form input {
+        padding: 12px;
+        border: 1px solid var(--color-body40W);
+        border-radius: var(--border-radius);
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .field label {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .error {
+        color: red;
+    }
+
+    .event-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: var(--border-radius);
+        background-color: var(--color-background);
+        margin-bottom: 8px;
+    }
+
+    .event-row span {
+        flex: 1;
+    }
+
+    .event-row .event-thumb {
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+        flex-shrink: 0;
+    }
+</style>
+
+<script>
+    import { supabase } from "../../lib/supabase.js";
+
+    const loginForm =
+        document.querySelector<HTMLFormElement>("#login-form")!;
+    const loginError = document.querySelector<HTMLElement>("#login-error")!;
+    const adminPanel = document.querySelector<HTMLElement>("#admin-panel")!;
+    const adminEmail = document.querySelector<HTMLElement>("#admin-email")!;
+    const eventsList = document.querySelector<HTMLElement>("#events-list")!;
+    const addEventForm =
+        document.querySelector<HTMLFormElement>("#add-event-form")!;
+    const logoutButton =
+        document.querySelector<HTMLButtonElement>("#logout-button")!;
+
+    async function loadEvents() {
+        const { data, error } = await supabase
+            .from("evenements")
+            .select("*")
+            .order("date", { ascending: true });
+
+        if (error) {
+            eventsList.innerHTML = `<p>Erreur : ${error.message}</p>`;
+            return;
+        }
+
+        eventsList.innerHTML = "";
+        for (const evenement of data) {
+            const row = document.createElement("div");
+            row.className = "event-row";
+
+            if (evenement.image) {
+                const thumb = document.createElement("img");
+                thumb.src = evenement.image;
+                thumb.alt = "";
+                thumb.className = "event-thumb";
+                row.appendChild(thumb);
+            }
+
+            const info = document.createElement("span");
+            info.textContent = `${evenement.date} · ${evenement.heure_debut}–${evenement.heure_fin} · ${evenement.titre}`;
+
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.textContent = "Supprimer";
+            deleteButton.addEventListener("click", async () => {
+                await supabase
+                    .from("evenements")
+                    .delete()
+                    .eq("id", evenement.id);
+                loadEvents();
+            });
+
+            row.append(info, deleteButton);
+            eventsList.appendChild(row);
+        }
+    }
+
+    function showAdmin(email: string | undefined) {
+        loginForm.hidden = true;
+        adminPanel.hidden = false;
+        adminEmail.textContent = email ?? "";
+        loadEvents();
+    }
+
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+    if (session) showAdmin(session.user.email);
+
+    loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(loginForm);
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: formData.get("email") as string,
+            password: formData.get("password") as string,
+        });
+
+        if (error) {
+            loginError.textContent = error.message;
+            loginError.hidden = false;
+            return;
+        }
+
+        showAdmin(data.user.email);
+    });
+
+    addEventForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(addEventForm);
+
+        let imageUrl: string | null = null;
+        const imageFile = formData.get("image") as File;
+        if (imageFile && imageFile.size > 0) {
+            const path = `${crypto.randomUUID()}-${imageFile.name}`;
+            const { error: uploadError } = await supabase.storage
+                .from("evenements")
+                .upload(path, imageFile);
+
+            if (uploadError) {
+                alert(uploadError.message);
+                return;
+            }
+
+            imageUrl = supabase.storage
+                .from("evenements")
+                .getPublicUrl(path).data.publicUrl;
+        }
+
+        const { error } = await supabase.from("evenements").insert({
+            date: formData.get("date"),
+            heure_debut: formData.get("heure_debut"),
+            heure_fin: formData.get("heure_fin"),
+            titre: formData.get("titre"),
+            lien: formData.get("lien") || null,
+            image: imageUrl,
+        });
+
+        if (error) {
+            alert(error.message);
+            return;
+        }
+
+        addEventForm.reset();
+        loadEvents();
+    });
+
+    logoutButton.addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        location.reload();
+    });
+</script>

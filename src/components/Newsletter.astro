@@ -1,0 +1,157 @@
+---
+
+---
+
+<section class="bandeau-newsletter">
+    <div class="newsletter-content">
+        <h2>Demandez la newsletter !</h2>
+        <div class="content">
+            <p>Chaque mois nous envoyons une lettre pour raconter :</p>
+            <ul>
+                <li>ce qui se passe dans les champs</li>
+                <li>ce qui se prépare sur le lieu</li>
+                <li>les dates des ventes et des événements</li>
+                <li>un peu du quotidien paysan</li>
+            </ul>
+            <p class="bold">
+                Des nouvelles simples, saisonnières, écrites depuis la terre.
+            </p>
+        </div>
+        <form action="">
+            <input
+                type="email"
+                name="email"
+                placeholder="email@labethanie.fr"
+                required
+            />
+            <button type="submit" class="btn">S'abonner</button>
+        </form>
+
+        <p class="confirmation" hidden>Merci, vous êtes abonné !</p>
+    </div>
+    <img
+        src="/background-carotte.svg"
+        alt=""
+        class="background-image carotte"
+    />
+    <img
+        src="/background-laitue.svg"
+        alt=""
+        class="background-image laitue"
+    />
+</section>
+
+<style>
+    .bandeau-newsletter {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-background);
+        border-radius: var(--border-radius);
+        position: relative;
+        padding: 40px;
+        overflow: hidden;
+    }
+
+    .newsletter-content {
+        width: fit-content;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 24px;
+    }
+
+    .newsletter-content .content {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        text-align: left;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .bandeau-newsletter form {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        width: 100%;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    form input {
+        width: 100%;
+        padding: 16px;
+        background-color: var(--color-white);
+        border-radius: var(--border-radius);
+        color: var(--color-body40W);
+        border: none;
+        font-size: 16px;
+        font-family: "Sora", sans-serif;
+        font-weight: 400;
+    }
+
+    form button {
+        width: auto;
+        justify-content: center;
+    }
+
+    .background-image {
+        position: absolute;
+        z-index: -1;
+    }
+
+    .carotte {
+        left: -5%;
+    }
+
+    .laitue {
+        right: -5%;
+    }
+
+    @media (max-width: 600px) {
+        .bandeau-newsletter form {
+            flex-direction: column;
+        }
+
+        form button {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .bandeau-newsletter {
+            padding: 24px;
+        }
+    }
+</style>
+
+<script>
+    const form = document.querySelector<HTMLFormElement>(
+        ".bandeau-newsletter form",
+    );
+    const confirmation = document.querySelector<HTMLElement>(
+        ".bandeau-newsletter .confirmation",
+    );
+
+    form?.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        // TODO: envoyer l'email à votre service de newsletter ici
+
+        confirmation?.removeAttribute("hidden");
+        form.reset();
+
+        setTimeout(() => {
+            confirmation?.setAttribute("hidden", "");
+        }, 2000);
+    });
+</script>

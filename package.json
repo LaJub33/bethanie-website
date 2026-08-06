@@ -12,6 +12,8 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@phosphor-icons/web": "^2.1.2",
+    "@supabase/supabase-js": "^2.112.0",
     "astro": "^6.4.7"
   }
 }

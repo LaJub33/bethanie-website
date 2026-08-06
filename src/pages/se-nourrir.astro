@@ -1,0 +1,250 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SellDisplay from "../components/SellDisplay.astro";
+import Newsletter from "../components/Newsletter.astro";
+import ContactBanner from "../components/ContactBanner.astro";
+---
+
+<Layout title="Se nourrir">
+    <div class="wrapper">
+        <!-- Hero Section -->
+        <section class="nourrir-hero">
+            <div class="col1">
+                <img
+                    src="/se-nourrir-image.jpg"
+                    alt="Image d'accueil"
+                />
+            </div>
+            <div class="col2">
+                <h1>
+                    <span>se nourrir</span>
+                    <span>à la</span>
+                    <span>béthanie</span>
+                </h1>
+                <p>
+                    À La Béthanie, on ne vient pas seulement acheter des
+                    légumes.On vient chercher des produits cultivés avec soin,
+                    au rythme des saisons, ancrés dans un territoire vivant.
+                </p>
+                <p class="bold">
+                    Se nourrir ici, c’est faire le choix d’une agriculture
+                    biologique exigeante, d’un maraîchage attentif au sol et
+                    d’une économie locale à taille humaine.
+                </p>
+            </div>
+        </section>
+
+        <!-- Ou trouver nos légumes -->
+        <SellDisplay />
+
+        <!-- BANDEAU CE QUI POUSSE A LA FERME    -->
+        <section class="ca-pousse">
+            <h2>Ce qui pousse à la ferme</h2>
+            <div class="content">
+                <div class="col">
+                    <h3>Légumes</h3>
+                    <p>
+                        Nous cultivons une quarantaine de légumes tout au long
+                        des saisons.
+                    </p>
+                </div>
+                <div class="col">
+                    <h3>Aromatiques</h3>
+                    <p>
+                        Pour accompagner les légumes, nous cultivons également
+                        une dizaine d’aromatiques !
+                    </p>
+                </div>
+                <div class="col">
+                    <h3>Fruits</h3>
+                    <p>
+                        Grâce aux fruitiers et arbustes de la ferme, nous vous
+                        proposons quelques fruits et mêmes des fraises !
+                    </p>
+                </div>
+                <div class="col">
+                    <h3>Oeufs</h3>
+                    <p>
+                        Nos poules qui se baladent à travers les jardins nous
+                        permettent de vous vendre des bons œufs bios et frais.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CULTURE AGRICULTURE BIOLOGIQUE SECTION -->
+        <section class="AB">
+            <div class="col1">
+                <h2>
+                    Des légumes cultivés ici, en <span
+                        >agriculture biologique</span
+                    >
+                </h2>
+                <p>
+                    Nous cultivons des légumes bio de saison, sur petite
+                    surface, en nous inspirant des pratiques du <span
+                        >maraîchage sur sol vivant</span
+                    >.
+                </p>
+                <p>Cela signifie :</p>
+                <ul>
+                    <li>prendre soin du sol plutôt que de le contraindre</li>
+                    <li>nourrir la vie microbienne</li>
+                    <li>couvrir la terre</li>
+                    <li>limiter le travail mécanique</li>
+                    <li>observer, s'adapter, accompagner</li>
+                </ul>
+                <p>
+                    Les légumes poussent lentement, à leur rythme.Ils sont
+                    récoltés à maturité, souvent la veille ou le jour même des
+                    ventes.
+                </p>
+                <p class="bold">
+                    Ce qui les rend spéciaux ? <br />
+                    La fraîcheur.La saisonnalité assumée. <br />
+                    Le soin apporté au sol. <br />
+                    Et le fait qu’ils soient cultivés ici, pour celles et ceux qui
+                    vivent ici.
+                </p>
+            </div>
+            <div class="col2">
+                <img src="/AB.jpg" alt="" class="" />
+            </div>
+        </section>
+
+        <!-- PLUS QUE DES LEGUMES SECTION -->
+        <section class="plus-que-des-legumes">
+            <div class="col1">
+                <h2>Plus que des légumes</h2>
+                <p>
+                    À La Béthanie, nous proposons également une sélection de
+                    produits choisis avec soin, cohérente avec notre manière de
+                    cultiver.
+                </p>
+                <p>Vous trouverez :</p>
+                <ul>
+                    <li>
+                        🥕 Des légumes bio du Sud-Ouest, pour compléter la
+                        gamme.
+                    </li>
+                    <li>🍎 Des fruits bio de saison.</li>
+                    <li>🍯 Du miel local.</li>
+                    <li>🥫 Des conserves bio.</li>
+                    <li>🥣 Des soupes bio.</li>
+                    <li>🌾 Des produits secs bio.</li>
+                    <li>🍺 Des bières lcales et artisanales.</li>
+                    <li>🍷 Des vins bio et locaux.</li>
+                </ul>
+                <p class="bold">
+                    Chaque produit raconte une manière de produire : artisanale,
+                    respctueuse, engagée.
+                </p>
+            </div>
+            <div class="col2">
+                <img src="/plus-legumes.jpg" alt="" class="" />
+            </div>
+        </section>
+
+        <!-- RETROUVEZ NOS LEGUMES AILLEURS SECTION -->
+        <section class="retrouvez-nos-legumes-ailleurs">
+            <h2>Retrouvez nos légumes ailleurs</h2>
+            <p>Nos légumes vivient aussi hors de la ferme.</p>
+            <p>Vous pouvez les retrouver :</p>
+            <div class="row">
+                <div class="col">
+                    <p class="surtitle">Léognan</p>
+                    <p>A la <span>Table Privée du Château Haut-Bailly</span></p>
+                </div>
+                <div class="col">
+                    <p class="surtitle">Saint-Médard-d'Eyrans / Bordeaux</p>
+                    <p>
+                        Dans la cuisine de <span>La Bonne Graine</span> et <span
+                            >Cocotte Mijote</span
+                        >
+                    </p>
+                </div>
+            </div>
+            <p class="bold">
+                Nous aimons savoir nos légumes cuisinés avec attention,
+                transformés, partagés autour d'une table.
+            </p>
+
+            <img
+                src="/background-laitue.svg"
+                alt=""
+                class="background-image laitue"
+            />
+            <img
+                src="/background-carotte.svg"
+                alt=""
+                class="background-image carotte"
+            />
+        </section>
+
+        <!-- NOS PARTENAIRES PRODUCTEURS SECTION -->
+        <section class="producteurs-partenaire">
+            <div class="col1">
+                <div class="row">
+                    <h2>Nos partenaires producteurs</h2>
+                    <p>
+                        Nous travaillons avec des producteurs et productrices
+                        qui partagent notre vision d’une agriculture vivante et
+                        responsable.
+                    </p>
+                </div>
+                <div class="row">
+                    <p class="bold">
+                        Ces collaborations prolongent ce que nous cultivons ici
+                        : <br />du soin, du goût, et du lien.
+                    </p>
+                </div>
+            </div>
+            <div class="col2">
+                <article class="card-producteur">
+                    <img
+                        src="/Marine Sulpice.jpg"
+                        alt=""
+                        class="image-producteur"
+                    />
+                    <p class="societe">Suplice miel</p>
+                    <h3>Marine Suplice</h3>
+                    <p>Miel local</p>
+                    <p class="localisation">Saint-Morillon</p>
+                </article>
+                <article class="card-producteur">
+                    <img
+                        src="/Anne Buiatti.jpg"
+                        alt=""
+                        class="image-producteur"
+                    />
+                    <p class="societe">Maison Advinam</p>
+                    <h3>Anne Buiatti</h3>
+                    <p>Vins bios et engagés</p>
+                    <p class="localisation">Saint-Morillon</p>
+                </article>
+                <article class="card-producteur">
+                    <img
+                        src="/Nathan Gouget.jpg"
+                        alt=""
+                        class="image-producteur"
+                    />
+                    <p class="societe">Le jardin du gou'</p>
+                    <h3>Nathan Gouget</h3>
+                    <p>Maraîchage à taille humaine</p>
+                    <p class="localisation">Pessac</p>
+                </article>
+                <article class="card-producteur">
+                    <img
+                        src="/barbara et Stephan.jpg"
+                        alt=""
+                        class="image-producteur"
+                    />
+                    <p class="societe">La brasserie des pins</p>
+                    <h3>Barbara et Stephan</h3>
+                    <p>Bières artisanales et locales</p>
+                    <p class="localisation">Cabanac et Villagrain</p>
+                </article>
+            </div>
+        </section>
+    </div>
+</Layout>

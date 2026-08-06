@@ -1,0 +1,155 @@
+---
+
+---
+
+<footer>
+    <div class="list-container">
+        <div class="row1">
+            <nav>
+                <ul>
+                    <li><a href="#about">Accueil</a></li>
+                    <li><a href="#services">Se nourrir</a></li>
+                    <li><a href="#contact">La ferme</a></li>
+                    <li><a href="#contact">L'association</a></li>
+                    <li><a href="#contact">L'agenda</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="row2">
+            <p>Demandez la newsletter</p>
+            <input type="email" placeholder="email@labethanie.fr" />
+            <button type="submit">S'abonner</button>
+        </div>
+    </div>
+    <div class="logo-container">
+        <a href="">
+            <img
+                src="/logo-full-white.svg"
+                alt="Logo de Bethanie"
+            />
+        </a>
+    </div>
+    <div class="credentials-container">
+        <div class="row1">
+            <a href="">@fermelabethanie</a>
+            <p>06 06 06 06 06</p>
+            <a href="mailto:contact@labethanie.fr">contact@labethanie.fr</a>
+            <p>Saint-Morillon, 33650 France</p>
+        </div>
+        <div class="row2">
+            <p>© 2026 La Bethanie</p>
+        </div>
+    </div>
+
+    <style>
+        /* FOOTER */
+        footer {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: 80px;
+            gap: 40px;
+        }
+
+        footer .list-container,
+        .credentials-container {
+            width: 100%;
+        }
+
+        footer a,
+        p {
+            text-decoration: none;
+            color: var(--color-white);
+            font-weight: 300;
+        }
+
+        /* FOOTER - LIST CONTAINER */
+
+        footer .list-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        footer .list-container .row1 ul {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            gap: 8px;
+        }
+
+        footer .list-container .row2 {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: left;
+        }
+
+        footer .list-container .row2 input {
+            padding: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #ffffff25;
+            border-radius: 4px;
+            border: none;
+            color: var(--color-white);
+            width: 100%;
+        }
+
+        footer .list-container .row2 button {
+            padding: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: var(--color-white);
+            color: var(--color-primary);
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* FOOTER - LOGO CONTAINER */
+        footer .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* FOOTER - CREDENTIALS CONTAINER */
+        footer .credentials-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 40px;
+            text-align: right;
+        }
+
+        footer .credentials-container * {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        @media (max-width: 900px) {
+            footer {
+                flex-direction: column;
+                padding: 40px;
+            }
+
+            footer .credentials-container {
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 500px) {
+            footer .credentials-container .row1 {
+                text-align: left;
+            }
+        }
+    </style>
+</footer>
