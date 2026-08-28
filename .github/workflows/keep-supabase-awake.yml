@@ -1,0 +1,22 @@
+name: Keep Supabase Awake
+
+on:
+  schedule:
+    - cron: "0 6 * * 1,4"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" \
+            "${{ secrets.PUBLIC_SUPABASE_URL }}/rest/v1/evenements?select=id&limit=1" \
+            -H "apikey: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}")
+          echo "Supabase responded with HTTP $status"
+          if [ "$status" -ge 400 ]; then
+            echo "::error::Supabase ping failed (HTTP $status) — project may be paused."
+            exit 1
+          fi
