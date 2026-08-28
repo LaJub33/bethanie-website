@@ -22,31 +22,27 @@ import Layout from '../layouts/Layout.astro';
         <!-- Organisons Section -->
         <section class="organisons">
             <div class="ligne">
-                <p class="label">À la Béthanie nous organisons des</p>
-                <p class="item">Cinémas plein air</p>
-            </div>
-            <div class="ligne">
-                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="label">À la Béthanie on organise des</p>
                 <p class="item">Spectacles</p>
             </div>
             <div class="ligne">
-                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="label">À la Béthanie on organise des</p>
                 <p class="item">Guinguettes</p>
             </div>
             <div class="ligne">
-                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="label">À la Béthanie on organise des</p>
                 <p class="item">Ventes festives</p>
             </div>
             <div class="ligne">
-                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="label">À la Béthanie on organise des</p>
                 <p class="item">Repas fermiers</p>
             </div>
             <div class="ligne">
-                <p class="label">À la Béthanie nous organisons des</p>
-                <p class="item">Chantiers</p>
+                <p class="label">À la Béthanie on organise des</p>
+                <p class="item">Chantiers participatifs</p>
             </div>
             <div class="ligne">
-                <p class="label">À la Béthanie nous organisons des</p>
+                <p class="label">À la Béthanie on organise des</p>
                 <p class="item">Évènements pour toutes et tous !</p>
             </div>
         </section>
@@ -64,12 +60,6 @@ import Layout from '../layouts/Layout.astro';
         <!-- Prochains évènements Section -->
         <section class="prochains-evenements">
             <h2>Nos prochains évènements</h2>
-            <p>
-                Nous organisons tout au long de l'année des évènements
-                culturels, festifs et pédagogiques dans le but de faire vivre
-                ce lieu et proposer une véritable expérience à toutes et à
-                tous.
-            </p>
 
             <div id="evenements-list"></div>
         </section>
@@ -90,6 +80,13 @@ import Layout from '../layouts/Layout.astro';
 
     if (error || !data) {
         eventsList.remove();
+    } else if (data.length === 0) {
+        eventsList.innerHTML = `
+            <p class="aucun-evenement">
+                Nous publierons bientôt nos prochains évènements, restez
+                connectés !
+            </p>
+        `;
     } else {
         for (const evenement of data) {
             const date = new Date(`${evenement.date}T00:00:00`);

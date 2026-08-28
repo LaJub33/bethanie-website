@@ -5,7 +5,12 @@ import Layout from "../../layouts/Layout.astro";
 <Layout title="Administration - Évènements">
     <div class="wrapper">
         <section class="admin-evenements">
-            <h1>Administration des évènements</h1>
+            <div class="header-row">
+                <h1>Administration des évènements</h1>
+                <span id="supabase-status" class="chip chip-checking"
+                    >Vérification…</span
+                >
+            </div>
 
             <form id="login-form">
                 <input type="email" name="email" placeholder="Email" required />
@@ -84,6 +89,36 @@ import Layout from "../../layouts/Layout.astro";
         max-width: 600px;
     }
 
+    .header-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .chip {
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .chip-checking {
+        background-color: var(--color-body40W);
+        color: var(--color-white);
+    }
+
+    .chip-online {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+    }
+
+    .chip-offline {
+        background-color: #c0392b;
+        color: var(--color-white);
+    }
+
     #login-form:not([hidden]),
     #add-event-form:not([hidden]) {
         display: flex;
@@ -156,6 +191,35 @@ import Layout from "../../layouts/Layout.astro";
         document.querySelector<HTMLFormElement>("#add-event-form")!;
     const logoutButton =
         document.querySelector<HTMLButtonElement>("#logout-button")!;
+    const supabaseStatus =
+        document.querySelector<HTMLElement>("#supabase-status")!;
+
+    async function checkSupabaseStatus() {
+        const timeout = new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error("timeout")), 5000),
+        );
+
+        try {
+            const result = await Promise.race([
+                supabase.from("evenements").select("id", {
+                    count: "exact",
+                    head: true,
+                }),
+                timeout,
+            ]);
+
+            if (result.error) throw result.error;
+
+            supabaseStatus.textContent = "Supabase actif";
+            supabaseStatus.className = "chip chip-online";
+        } catch {
+            supabaseStatus.textContent =
+                "Supabase injoignable (projet en pause ?)";
+            supabaseStatus.className = "chip chip-offline";
+        }
+    }
+
+    checkSupabaseStatus();
 
     async function loadEvents() {
         const { data, error } = await supabase

@@ -273,8 +273,9 @@ a {
 }
 
 .partenaire .content .logo-ccm {
-    max-width: 100%;
-    height: auto;
+    width: auto;
+    height: 100%;
+    object-fit: contain;
 }
 
 /* SE NOURRIR SECTION */
@@ -292,7 +293,7 @@ a {
 
 .nourrir-hero .col1 img {
     width: 100%;
-    max-height: 480px;
+    max-height: 720px;
     object-fit: cover;
 }
 
@@ -318,7 +319,7 @@ a {
     display: flex;
     flex-direction: row;
     gap: 40px;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .ca-pousse .content .col {
@@ -334,6 +335,11 @@ a {
     text-transform: uppercase;
     font-weight: 900;
     font-size: 32px;
+}
+
+.ca-pousse .content .col .liste-varietes {
+    font-size: 12px;
+    opacity: 0.4;
 }
 
 .AB {
@@ -368,6 +374,7 @@ a {
 
 /* PLUS QUE DES LEGUMES SECTION */
 .plus-que-des-legumes {
+    margin-top: -40px;
     display: flex;
     flex-direction: row-reverse;
     gap: 40px;
@@ -863,11 +870,65 @@ a {
     cursor: text;
 }
 
-.aventure-collective .col2 img {
+.aventure-collective .col2 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 50%;
+}
+
+.aventure-collective .col2 > img {
     width: 100%;
-    height: 100%;
+    height: 160px;
     object-fit: cover;
     border-radius: var(--border-radius);
+}
+
+.aventure-collective .col2 .row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.aventure-collective .col2 .row img {
+    flex: 1;
+    min-width: 0;
+    height: 160px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
+.benevole {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.benevole .categories {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 8px 0;
+}
+
+.benevole .categorie {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-background);
+}
+
+.benevole .categorie h3 {
+    text-transform: uppercase;
+}
+
+.benevole .categorie ul {
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .helloasso {
@@ -908,7 +969,7 @@ a {
     display: grid;
     height: 620px;
     overflow: hidden;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 1.1fr);
     gap: 24px;
 }
@@ -977,12 +1038,12 @@ a {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
 }
 
 .organisons .label {
     flex-shrink: 0;
-    width: 340px;
+    width: auto;
     font-size: 16px;
     font-weight: 800;
     text-transform: uppercase;
@@ -1138,6 +1199,11 @@ a {
     align-self: center;
     color: var(--color-primary);
     text-decoration: underline;
+}
+
+.prochains-evenements .aucun-evenement {
+    opacity: 0.5;
+    text-align: center;
 }
 
 .invitation {
@@ -1437,13 +1503,6 @@ a {
         min-width: 0;
         height: 80px;
         object-fit: cover;
-    }
-}
-
-/* RESPONSIVE - PAGE AGENDA */
-@media (max-width: 1200px) {
-    .agenda-hero {
-        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
     }
 }
 
