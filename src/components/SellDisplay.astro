@@ -3,190 +3,230 @@
 ---
 
 <section class="bandeau-vente">
-    <div class="container">
-        <div class="first-container">
-            <p class="title-container">Où trouver nos légumes ?</p>
-            <div class="line-separator"></div>
-        </div>
+    <div class="image-col">
+        <img
+            src="/sell-display-image.jpg"
+            alt="Rangs de légumes sous serre"
+        />
+        <p class="title-overlay">
+            Où<br />trouver<br />nos<br />légumes ?
+        </p>
+    </div>
 
-        <div class="marche-a-la-ferme">
-            <p class="title-section">Marché à la ferme</p>
-            <p>Tous les vendredis de 16h à 19h</p>
-            <a href="https://goo.gl/maps/1Z5g6J8J8J8J8J8J8" target="_blank"
-                >181 Fournié Ouest, Saint-Morillon</a
-            >
-        </div>
+    <div class="content-col">
+        <div class="vente-en-ligne">
+            <p class="surtitle">Vente en ligne</p>
+            <p class="titre">Les lundis et jeudis</p>
 
-        <div class="commandez-votre-panier">
-            <p class="title-section">Commandez votre panier</p>
-
-            <!-- Début de semaine -->
-            <p class="subtitle-section">Début de semaine</p>
-            <p><span>Commande</span> : lundi 12h à minuit</p>
-            <p><span>Retrait</span> : mardi de 16h à 19h</p>
-
-            <!-- Fin de semaine -->
-            <p class="subtitle-section">Fin de semaine</p>
-            <p><span>Commande</span> : jeudi 12h à minuit</p>
-            <p><span>Retrait</span> : vendredi de 16h à 19h</p>
+            <div class="etape">
+                <span class="numero">1</span>
+                <p>
+                    Commandez sur notre site <span class="bold"
+                        >entre 12h et minuit</span
+                    >
+                </p>
+            </div>
+            <div class="etape">
+                <span class="numero">2</span>
+                <p>
+                    Retirez votre commande <span class="bold"
+                        >le lendemain 16h à 19h (les mardis et vendredis)</span
+                    >
+                </p>
+            </div>
 
             <a
                 href="https://boutique.ouvretaferme.org/la-bethanie"
                 class="btn"
                 target="_blank"
             >
-                Commander mon panier <i class="ph ph-arrow-up-right"></i>
+                Commander mon panier
             </a>
         </div>
+
+        <div class="marche-a-la-ferme">
+            <p class="surtitle">Marché à la ferme</p>
+            <p class="titre">Les vendredis</p>
+            <p>
+                Venez acheter vos produits à la ferme <span class="bold"
+                    >tous les vendredis de 16h à 19h</span
+                >
+            </p>
+
+            <div class="adresse-box">
+                <p class="adresse-intro">
+                    Le retrait des commandes et le marché à la ferme se font
+                    au :
+                </p>
+                <a
+                    href="https://goo.gl/maps/1Z5g6J8J8J8J8J8J8"
+                    target="_blank"
+                    class="adresse-lien"
+                >
+                    181 Fournié Ouest, Saint Morillon 33650
+                </a>
+                <img src="/MapPin.svg" alt="" class="map-pin" />
+            </div>
+        </div>
     </div>
-    <img src="/chou.jpg" alt="" class="background-image chou" />
-    <img src="/laitue.jpg" alt="" class="background-image laitue" />
 </section>
 
 <style>
     .bandeau-vente {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        background-color: var(--color-white);
+        box-shadow: 0px 0px 25px #13624112;
+    }
+
+    .image-col {
+        position: relative;
+        flex: 0 0 28%;
+        min-width: 260px;
+    }
+
+    .image-col img {
         width: 100%;
         height: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 24px;
-        color: var(--color-body);
-        position: relative;
-        gap: 40px;
-
-        border-radius: var(--border-radius);
-        overflow: hidden;
-
-        border-right: 8px solid var(--color-primary);
-        border-bottom: 8px solid var(--color-primary);
-    }
-
-    .background-image {
-        position: absolute;
-        width: fit-content;
         object-fit: cover;
-        z-index: -1;
     }
 
-    .background-image.chou {
-        bottom: 0;
+    .image-col::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.55) 0%,
+            rgba(0, 0, 0, 0.2) 45%,
+            rgba(0, 0, 0, 0) 70%
+        );
+    }
+
+    .title-overlay {
+        position: absolute;
+        top: 50%;
         left: 0;
+        transform: translateY(-50%);
+        padding: 24px;
+        color: var(--color-white);
+        font-size: 40px;
+        font-weight: 800;
+        line-height: 1.1;
+        text-transform: uppercase;
+        white-space: nowrap;
     }
 
-    .background-image.laitue {
-        top: 0;
-        right: 0;
-    }
-
-    .bandeau-vente .container {
-        width: 100%;
-        display: flex;
-        position: relative;
-        vertical-align: middle;
-        gap: 40px;
-        overflow: hidden;
-        border-radius: var(--border-radius);
-    }
-
-    .bandeau-vente .first-container {
+    .content-col {
+        flex: 1;
         display: flex;
         flex-direction: row;
-        gap: 8px;
-        width: fit-content;
+        gap: 40px;
+        padding: 24px;
     }
 
-    .bandeau-vente .title-container {
-        font-size: 32px;
-        font-weight: 800;
-        width: 216px;
-        text-transform: uppercase;
-        align-self: center;
-    }
-
-    .bandeau-vente .line-separator {
-        width: 1px;
-        height: 174px;
-        background-color: var(--color-body);
-        align-self: center;
-    }
-
-    .bandeau-vente .marche-a-la-ferme,
-    .bandeau-vente .commandez-votre-panier {
+    .vente-en-ligne,
+    .marche-a-la-ferme {
+        flex: 1;
         display: flex;
         flex-direction: column;
         gap: 8px;
-        width: 50%;
-        align-self: center;
     }
 
-    .bandeau-vente .marche-a-la-ferme .title-section,
-    .bandeau-vente .commandez-votre-panier .title-section {
-        font-size: 24px;
-        font-weight: bold;
+    .surtitle {
+        font-size: 16px;
+        font-weight: 700;
         text-transform: uppercase;
-    }
-
-    .bandeau-vente .marche-a-la-ferme p {
-        font-size: 16px;
-        font-weight: 400;
-    }
-
-    .bandeau-vente .marche-a-la-ferme a {
         color: var(--color-primary);
-        text-decoration: underline;
-        font-size: 12px;
-        font-weight: 300;
-        width: fit-content;
     }
 
-    .bandeau-vente .subtitle-section {
-        font-size: 16px;
+    .titre {
+        font-size: 28px;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--color-body);
+        line-height: 1.1;
+        margin-bottom: 8px;
+    }
+
+    .bold {
+        font-weight: 700;
+    }
+
+    .etape {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .numero {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        margin-top: 2px;
+        border: 1px solid var(--color-body);
+        border-radius: 50%;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .vente-en-ligne .btn {
+        margin-top: 16px;
+    }
+
+    .adresse-box {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 16px;
+        padding: 16px 20px;
+        border-radius: var(--border-radius);
+        background-color: var(--color-background);
+    }
+
+    .adresse-intro {
+        font-size: 14px;
+        color: var(--color-body40W);
+    }
+
+    .adresse-lien {
+        font-size: 14px;
         font-weight: 600;
         color: var(--color-primary);
-        text-transform: uppercase;
-    }
-
-    .bandeau-vente .commandez-votre-panier span {
         text-decoration: underline;
     }
 
-    .bandeau-vente a {
-        color: var(--color-primary);
-        text-decoration: underline;
+    .adresse-box .map-pin {
+        position: absolute;
+        bottom: -10px;
+        right: -10px;
+        width: 90px;
+        height: auto;
     }
 
     @media (max-width: 900px) {
         .bandeau-vente {
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 60vh;
         }
 
-        .bandeau-vente .container {
+        .image-col {
+            flex: none;
+            width: 100%;
+            height: 220px;
+        }
+
+        .content-col {
             flex-direction: column;
-            max-width: 480px;
-        }
-
-        .bandeau-vente .first-container {
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .bandeau-vente .title-container {
-            width: 100%;
-        }
-
-        .bandeau-vente .line-separator {
-            width: 100%;
-            height: 1px;
-        }
-
-        .bandeau-vente .marche-a-la-ferme,
-        .bandeau-vente .commandez-votre-panier {
-            width: 100%;
+            padding: 24px;
         }
     }
 </style>

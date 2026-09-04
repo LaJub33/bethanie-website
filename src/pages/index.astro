@@ -125,11 +125,7 @@ import ContactBanner from "../components/ContactBanner.astro";
             <h2>Un projet collectif</h2>
             <div class="content">
                 <div class="col1">
-                    <img
-                        src="/logo-ccm.jpg"
-                        alt=""
-                        class="logo-ccm"
-                    />
+                    <img src="/logo-ccm.jpg" alt="" class="logo-ccm" />
                 </div>
                 <div class="col2">
                     <p>
@@ -180,8 +176,9 @@ import ContactBanner from "../components/ContactBanner.astro";
 </style>
 
 <script>
-    const floatingButton =
-        document.querySelector<HTMLElement>("#floating-order-btn")!;
+    const floatingButton = document.querySelector<HTMLElement>(
+        "#floating-order-btn",
+    )!;
     const sellDisplay = document.querySelector<HTMLElement>(".bandeau-vente");
 
     let sellDisplayVisible = false;
@@ -210,6 +207,6 @@ import ContactBanner from "../components/ContactBanner.astro";
         setTimeout(() => {
             readyToShow = true;
             updateFloatingButton();
-        }, 2000);
+        }, 1000);
     });
 </script>
