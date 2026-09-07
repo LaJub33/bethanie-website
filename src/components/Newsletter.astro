@@ -17,7 +17,7 @@
                 Des nouvelles simples, saisonnières, écrites depuis la terre.
             </p>
         </div>
-        <form action="">
+        <form>
             <input
                 type="email"
                 name="email"
@@ -28,6 +28,12 @@
         </form>
 
         <p class="confirmation" hidden>Merci, vous êtes abonné !</p>
+        <p class="already-subscribed" hidden>
+            Cet email est déjà inscrit à la newsletter.
+        </p>
+        <p class="error-message" hidden>
+            Une erreur est survenue, veuillez réessayer.
+        </p>
     </div>
     <img
         src="/background-carotte.svg"
@@ -104,6 +110,10 @@
         justify-content: center;
     }
 
+    .error-message {
+        color: #c0392b;
+    }
+
     .background-image {
         position: absolute;
         z-index: -1;
@@ -135,23 +145,55 @@
 </style>
 
 <script>
+    import { supabase } from "../lib/supabase.js";
+
     const form = document.querySelector<HTMLFormElement>(
         ".bandeau-newsletter form",
     );
     const confirmation = document.querySelector<HTMLElement>(
         ".bandeau-newsletter .confirmation",
     );
+    const alreadySubscribedMessage = document.querySelector<HTMLElement>(
+        ".bandeau-newsletter .already-subscribed",
+    );
+    const errorMessage = document.querySelector<HTMLElement>(
+        ".bandeau-newsletter .error-message",
+    );
+    const submitButton =
+        form?.querySelector<HTMLButtonElement>("button[type=submit]");
 
-    form?.addEventListener("submit", (event) => {
+    form?.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        // TODO: envoyer l'email à votre service de newsletter ici
+        const email = new FormData(form).get("email");
+        if (typeof email !== "string" || !email) return;
 
-        confirmation?.removeAttribute("hidden");
+        errorMessage?.setAttribute("hidden", "");
+        alreadySubscribedMessage?.setAttribute("hidden", "");
+        if (submitButton) submitButton.disabled = true;
+
+        const { data, error } = await supabase.functions.invoke(
+            "subscribe-newsletter",
+            { body: { email } },
+        );
+
+        if (submitButton) submitButton.disabled = false;
+
+        if (error) {
+            errorMessage?.removeAttribute("hidden");
+            return;
+        }
+
         form.reset();
 
+        const messageToShow = data?.alreadySubscribed
+            ? alreadySubscribedMessage
+            : confirmation;
+
+        messageToShow?.removeAttribute("hidden");
+
         setTimeout(() => {
-            confirmation?.setAttribute("hidden", "");
+            messageToShow?.setAttribute("hidden", "");
         }, 2000);
     });
 </script>

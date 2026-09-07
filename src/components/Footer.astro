@@ -18,8 +18,22 @@
         </div>
         <div class="row2">
             <p>Demandez la newsletter</p>
-            <input type="email" placeholder="email@labethanie.fr" />
-            <button type="submit">S'abonner</button>
+            <form class="footer-newsletter-form">
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="email@labethanie.fr"
+                    required
+                />
+                <button type="submit">S'abonner</button>
+            </form>
+            <p class="confirmation" hidden>Merci, vous êtes abonné !</p>
+            <p class="already-subscribed" hidden>
+                Cet email est déjà inscrit à la newsletter.
+            </p>
+            <p class="error-message" hidden>
+                Une erreur est survenue, veuillez réessayer.
+            </p>
         </div>
     </div>
     <div class="logo-container">
@@ -101,6 +115,12 @@
             width: 100%;
         }
 
+        footer .list-container .row2 form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
         footer .list-container .row2 button {
             padding: 16px;
             border: none;
@@ -111,6 +131,10 @@
             font-size: 16px;
             cursor: pointer;
             text-transform: uppercase;
+        }
+
+        footer .list-container .row2 .error-message {
+            color: #ffb4a8;
         }
 
         /* FOOTER - LOGO CONTAINER */
@@ -152,4 +176,58 @@
             }
         }
     </style>
+
+    <script>
+        import { supabase } from "../lib/supabase.js";
+
+        const form = document.querySelector<HTMLFormElement>(
+            "footer .footer-newsletter-form",
+        );
+        const confirmation = document.querySelector<HTMLElement>(
+            "footer .list-container .row2 .confirmation",
+        );
+        const alreadySubscribedMessage = document.querySelector<HTMLElement>(
+            "footer .list-container .row2 .already-subscribed",
+        );
+        const errorMessage = document.querySelector<HTMLElement>(
+            "footer .list-container .row2 .error-message",
+        );
+        const submitButton =
+            form?.querySelector<HTMLButtonElement>("button[type=submit]");
+
+        form?.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const email = new FormData(form).get("email");
+            if (typeof email !== "string" || !email) return;
+
+            errorMessage?.setAttribute("hidden", "");
+            alreadySubscribedMessage?.setAttribute("hidden", "");
+            if (submitButton) submitButton.disabled = true;
+
+            const { data, error } = await supabase.functions.invoke(
+                "subscribe-newsletter",
+                { body: { email } },
+            );
+
+            if (submitButton) submitButton.disabled = false;
+
+            if (error) {
+                errorMessage?.removeAttribute("hidden");
+                return;
+            }
+
+            form.reset();
+
+            const messageToShow = data?.alreadySubscribed
+                ? alreadySubscribedMessage
+                : confirmation;
+
+            messageToShow?.removeAttribute("hidden");
+
+            setTimeout(() => {
+                messageToShow?.setAttribute("hidden", "");
+            }, 2000);
+        });
+    </script>
 </footer>

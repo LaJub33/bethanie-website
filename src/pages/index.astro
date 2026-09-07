@@ -13,7 +13,7 @@ import ContactBanner from "../components/ContactBanner.astro";
                 <img src="/hero-image.jpg" alt="Image d'accueil" />
             </div>
             <a
-                href="https://www.helloasso.com/associations/la-bethanie/adhesions/commande-de-legumes"
+                href="https://boutique.ouvretaferme.org/la-bethanie"
                 class="btn floating-order-btn"
                 id="floating-order-btn"
                 target="_blank"
@@ -40,7 +40,23 @@ import ContactBanner from "../components/ContactBanner.astro";
         <!-- La Béthanie Section -->
         <section class="la-bethanie" id="la-bethanie">
             <div class="col1">
-                <img src="/la-bethanie.jpg" alt="La Béthanie" />
+                <video
+                    class="la-bethanie-video"
+                    width="548"
+                    height="262"
+                    muted
+                    loop
+                    playsinline
+                    disablepictureinpicture
+                    preload="none"
+                    poster="/la-bethanie.jpg"
+                    aria-label="La Béthanie"
+                >
+                    <source
+                        data-src="/ferme_presentation_548x262.mp4"
+                        type="video/mp4"
+                    />
+                </video>
             </div>
             <div class="col2">
                 <div class="title-section">
@@ -63,7 +79,7 @@ import ContactBanner from "../components/ContactBanner.astro";
                     projets agricoles durables.
                 </p>
 
-                <a href="" target="_blank">En savoir plus</a>
+                <a href="/la-ferme" target="_blank">En savoir plus</a>
             </div>
             <img
                 src="/bethanie-background-chou.jpg"
@@ -74,7 +90,7 @@ import ContactBanner from "../components/ContactBanner.astro";
 
         <!-- Carroussel Section -->
         <section class="carroussel">
-            <a href="" class="card">
+            <a href="/se-nourrir" class="card">
                 <div class="content">
                     <h2>Se nourrir</h2>
                     <p>
@@ -88,7 +104,7 @@ import ContactBanner from "../components/ContactBanner.astro";
 
                 <img src="/se-nourrir.jpg" alt="Image 1" />
             </a>
-            <a href="" class="card">
+            <a href="/la-ferme" class="card">
                 <div class="content">
                     <h2>La ferme</h2>
                     <p>
@@ -101,7 +117,7 @@ import ContactBanner from "../components/ContactBanner.astro";
                 </div>
                 <img src="/la-ferme.jpg" alt="Image 2" />
             </a>
-            <a href="" class="card">
+            <a href="/l-association" class="card">
                 <div class="content">
                     <h2>L'association</h2>
                     <p>
@@ -209,4 +225,23 @@ import ContactBanner from "../components/ContactBanner.astro";
             updateFloatingButton();
         }, 1000);
     });
+
+    const bethanieVideo =
+        document.querySelector<HTMLVideoElement>(".la-bethanie-video");
+    const bethanieSource = bethanieVideo?.querySelector("source");
+
+    if (bethanieVideo && bethanieSource?.dataset.src) {
+        const videoObserver = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) return;
+
+                bethanieSource.src = bethanieSource.dataset.src!;
+                bethanieVideo.load();
+                bethanieVideo.play().catch(() => {});
+                videoObserver.disconnect();
+            },
+            { rootMargin: "300px" },
+        );
+        videoObserver.observe(bethanieVideo);
+    }
 </script>

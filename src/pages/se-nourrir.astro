@@ -71,7 +71,7 @@ import ContactBanner from "../components/ContactBanner.astro";
                     <h3>Fruits</h3>
                     <p>
                         Grâce aux fruitiers et arbustes de la ferme, nous vous
-                        proposons quelques fruits et mêmes des fraises !
+                        proposons quelques fruits et même des fraises !
                     </p>
                     <p class="liste-varietes">
                         Fraise, Framboise, Melon, Pastèque, Physalis, Prune
@@ -259,3 +259,70 @@ import ContactBanner from "../components/ContactBanner.astro";
         </section>
     </div>
 </Layout>
+
+<script>
+    const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const lists = document.querySelectorAll<HTMLElement>(
+        ".ca-pousse .liste-varietes",
+    );
+
+    function startAutoScroll() {
+        if (prefersReducedMotion) return;
+
+        lists.forEach((list) => {
+            // Measured after fonts are ready, otherwise a fallback-font
+            // reflow after load could make this value stale.
+            const maxScroll = list.scrollHeight - list.clientHeight;
+            if (maxScroll <= 0) return;
+
+            const pxPerSecond = 12;
+            const pauseMs = 1200;
+            let direction = 1;
+            // scrollTop is rounded to the nearest integer by the browser, so
+            // sub-pixel increments must be accumulated separately or they get
+            // rounded away on every frame.
+            let position = 0;
+            let lastTime: number | null = null;
+
+            function step(time: number) {
+                if (lastTime === null) lastTime = time;
+                const delta = (time - lastTime) / 1000;
+                lastTime = time;
+
+                position += direction * pxPerSecond * delta;
+
+                if (direction === 1 && position >= maxScroll) {
+                    position = maxScroll;
+                    list.scrollTop = position;
+                    direction = -1;
+                    lastTime = null;
+                    setTimeout(() => requestAnimationFrame(step), pauseMs);
+                    return;
+                }
+
+                if (direction === -1 && position <= 0) {
+                    position = 0;
+                    list.scrollTop = position;
+                    direction = 1;
+                    lastTime = null;
+                    setTimeout(() => requestAnimationFrame(step), pauseMs);
+                    return;
+                }
+
+                list.scrollTop = position;
+                requestAnimationFrame(step);
+            }
+
+            setTimeout(() => requestAnimationFrame(step), pauseMs);
+        });
+    }
+
+    if (document.fonts?.ready) {
+        document.fonts.ready.then(startAutoScroll);
+    } else {
+        startAutoScroll();
+    }
+</script>
