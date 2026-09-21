@@ -9,14 +9,18 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Supabase
+      - name: Write to Supabase keepalive table
         run: |
           status=$(curl -s -o /dev/null -w "%{http_code}" \
-            "${{ secrets.PUBLIC_SUPABASE_URL }}/rest/v1/evenements?select=id&limit=1" \
+            -X PATCH \
+            "${{ secrets.PUBLIC_SUPABASE_URL }}/rest/v1/keepalive?id=eq.1" \
             -H "apikey: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}")
+            -H "Authorization: Bearer ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "{\"pinged_at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}")
           echo "Supabase responded with HTTP $status"
           if [ "$status" -ge 400 ]; then
-            echo "::error::Supabase ping failed (HTTP $status) — project may be paused."
+            echo "::error::Supabase keepalive write failed (HTTP $status) — project may be paused."
             exit 1
           fi

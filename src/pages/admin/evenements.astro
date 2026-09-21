@@ -6,31 +6,32 @@ import Layout from "../../layouts/Layout.astro";
     <div class="wrapper">
         <section class="admin-evenements">
             <div class="header-row">
-                <h1>Administration des évènements</h1>
+                <a href="/admin" class="back-link"
+                    ><i class="ph ph-arrow-left"></i> Administration</a
+                >
                 <span id="supabase-status" class="chip chip-checking"
                     >Vérification…</span
                 >
             </div>
 
-            <form id="login-form">
-                <input type="email" name="email" placeholder="Email" required />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Mot de passe"
-                    required
-                />
-                <button type="submit" class="btn">Se connecter</button>
-                <p id="login-error" class="error" hidden></p>
-            </form>
-
             <div id="admin-panel" hidden>
                 <div id="logged-in-as">
-                    <p>Connecté en tant que <strong id="admin-email"></strong></p>
-                    <button type="button" id="logout-button">Se déconnecter</button>
+                    <h1>Administration des évènements</h1>
+                    <div>
+                        <span
+                            >Connecté en tant que <strong id="admin-email"
+                            ></strong></span
+                        >
+                        <button type="button" id="logout-button"
+                            >Se déconnecter</button
+                        >
+                    </div>
                 </div>
 
-                <h2>Ajouter un évènement</h2>
+                <h2>Évènements à venir</h2>
+                <div id="events-list"></div>
+
+                <h2 id="event-form-title">Ajouter un évènement</h2>
                 <form id="add-event-form">
                     <div class="field">
                         <label for="event-date">Date</label>
@@ -59,6 +60,20 @@ import Layout from "../../layouts/Layout.astro";
                         <input id="event-titre" type="text" name="titre" required />
                     </div>
                     <div class="field">
+                        <label for="event-description"
+                            >Description (optionnel)</label
+                        >
+                        <textarea
+                            id="event-description"
+                            name="description"
+                            rows="4"
+                        ></textarea>
+                        <p class="field-hint">
+                            Affichée uniquement sur la page de l'évènement, pas
+                            sur sa fiche dans l'agenda.
+                        </p>
+                    </div>
+                    <div class="field">
                         <label for="event-lien">Lien (optionnel)</label>
                         <input id="event-lien" type="url" name="lien" />
                     </div>
@@ -68,14 +83,24 @@ import Layout from "../../layouts/Layout.astro";
                             id="event-image"
                             type="file"
                             name="image"
-                            accept="image/*"
+                            accept="image/jpeg,image/png"
                         />
+                        <p id="event-image-hint" class="field-hint" hidden>
+                            Laissez vide pour conserver l'image actuelle.
+                        </p>
                     </div>
-                    <button type="submit" class="btn">Ajouter</button>
+                    <div class="form-actions">
+                        <button type="submit" id="submit-event-button" class="btn"
+                            >Ajouter</button
+                        >
+                        <button
+                            type="button"
+                            id="cancel-edit-button"
+                            class="btn-secondary"
+                            hidden>Annuler</button
+                        >
+                    </div>
                 </form>
-
-                <h2>Évènements à venir</h2>
-                <div id="events-list"></div>
             </div>
         </section>
     </div>
@@ -92,8 +117,17 @@ import Layout from "../../layouts/Layout.astro";
     .header-row {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 12px;
         flex-wrap: wrap;
+    }
+
+    .back-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: var(--color-body);
     }
 
     .chip {
@@ -119,7 +153,6 @@ import Layout from "../../layouts/Layout.astro";
         color: var(--color-white);
     }
 
-    #login-form:not([hidden]),
     #add-event-form:not([hidden]) {
         display: flex;
         flex-direction: column;
@@ -131,13 +164,22 @@ import Layout from "../../layouts/Layout.astro";
         align-items: center;
         justify-content: space-between;
         gap: 12px;
+        flex-wrap: wrap;
     }
 
-    #login-form input,
-    #add-event-form input {
+    #logged-in-as > div {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    #add-event-form input,
+    #add-event-form textarea {
         padding: 12px;
         border: 1px solid var(--color-body40W);
         border-radius: var(--border-radius);
+        font-family: inherit;
+        resize: vertical;
     }
 
     .field {
@@ -149,6 +191,25 @@ import Layout from "../../layouts/Layout.astro";
     .field label {
         font-weight: 600;
         font-size: 14px;
+    }
+
+    .field-hint {
+        font-size: 12px;
+        color: var(--color-body40W);
+    }
+
+    .form-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .btn-secondary {
+        padding: 12px 24px;
+        border: 1px solid var(--color-body40W);
+        border-radius: var(--border-radius);
+        background-color: transparent;
+        cursor: pointer;
     }
 
     .error {
@@ -180,10 +241,8 @@ import Layout from "../../layouts/Layout.astro";
 
 <script>
     import { supabase } from "../../lib/supabase.js";
+    import { requireAdminSession } from "../../lib/adminAuth.js";
 
-    const loginForm =
-        document.querySelector<HTMLFormElement>("#login-form")!;
-    const loginError = document.querySelector<HTMLElement>("#login-error")!;
     const adminPanel = document.querySelector<HTMLElement>("#admin-panel")!;
     const adminEmail = document.querySelector<HTMLElement>("#admin-email")!;
     const eventsList = document.querySelector<HTMLElement>("#events-list")!;
@@ -193,6 +252,52 @@ import Layout from "../../layouts/Layout.astro";
         document.querySelector<HTMLButtonElement>("#logout-button")!;
     const supabaseStatus =
         document.querySelector<HTMLElement>("#supabase-status")!;
+    const eventFormTitle =
+        document.querySelector<HTMLElement>("#event-form-title")!;
+    const submitEventButton =
+        document.querySelector<HTMLButtonElement>("#submit-event-button")!;
+    const cancelEditButton =
+        document.querySelector<HTMLButtonElement>("#cancel-edit-button")!;
+    const eventImageHint =
+        document.querySelector<HTMLElement>("#event-image-hint")!;
+
+    let editingEvent: { id: string; image: string | null } | null = null;
+
+    function resetForm() {
+        editingEvent = null;
+        addEventForm.reset();
+        eventFormTitle.textContent = "Ajouter un évènement";
+        submitEventButton.textContent = "Ajouter";
+        cancelEditButton.hidden = true;
+        eventImageHint.hidden = true;
+    }
+
+    function startEdit(evenement: {
+        id: string;
+        date: string;
+        heure_debut: string;
+        heure_fin: string;
+        titre: string;
+        description: string | null;
+        lien: string | null;
+        image: string | null;
+    }) {
+        editingEvent = { id: evenement.id, image: evenement.image };
+
+        addEventForm.date.value = evenement.date;
+        addEventForm.heure_debut.value = evenement.heure_debut;
+        addEventForm.heure_fin.value = evenement.heure_fin;
+        addEventForm.titre.value = evenement.titre;
+        addEventForm.description.value = evenement.description ?? "";
+        addEventForm.lien.value = evenement.lien ?? "";
+
+        eventFormTitle.textContent = "Modifier l'évènement";
+        submitEventButton.textContent = "Enregistrer";
+        cancelEditButton.hidden = false;
+        eventImageHint.hidden = false;
+
+        addEventForm.scrollIntoView({ behavior: "smooth" });
+    }
 
     async function checkSupabaseStatus() {
         const timeout = new Promise<never>((_, reject) =>
@@ -248,6 +353,11 @@ import Layout from "../../layouts/Layout.astro";
             const info = document.createElement("span");
             info.textContent = `${evenement.date} · ${evenement.heure_debut}–${evenement.heure_fin} · ${evenement.titre}`;
 
+            const editButton = document.createElement("button");
+            editButton.type = "button";
+            editButton.textContent = "Modifier";
+            editButton.addEventListener("click", () => startEdit(evenement));
+
             const deleteButton = document.createElement("button");
             deleteButton.type = "button";
             deleteButton.textContent = "Supprimer";
@@ -256,51 +366,34 @@ import Layout from "../../layouts/Layout.astro";
                     .from("evenements")
                     .delete()
                     .eq("id", evenement.id);
+                if (editingEvent?.id === evenement.id) resetForm();
                 loadEvents();
             });
 
-            row.append(info, deleteButton);
+            row.append(info, editButton, deleteButton);
             eventsList.appendChild(row);
         }
     }
 
-    function showAdmin(email: string | undefined) {
-        loginForm.hidden = true;
+    const session = await requireAdminSession();
+    if (session) {
         adminPanel.hidden = false;
-        adminEmail.textContent = email ?? "";
+        adminEmail.textContent = session.user.email ?? "";
         loadEvents();
     }
-
-    const {
-        data: { session },
-    } = await supabase.auth.getSession();
-    if (session) showAdmin(session.user.email);
-
-    loginForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const formData = new FormData(loginForm);
-
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: formData.get("email") as string,
-            password: formData.get("password") as string,
-        });
-
-        if (error) {
-            loginError.textContent = error.message;
-            loginError.hidden = false;
-            return;
-        }
-
-        showAdmin(data.user.email);
-    });
 
     addEventForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const formData = new FormData(addEventForm);
 
-        let imageUrl: string | null = null;
+        let imageUrl: string | null = editingEvent?.image ?? null;
         const imageFile = formData.get("image") as File;
         if (imageFile && imageFile.size > 0) {
+            if (!["image/jpeg", "image/png"].includes(imageFile.type)) {
+                alert("L'image doit être au format JPG ou PNG.");
+                return;
+            }
+
             const path = `${crypto.randomUUID()}-${imageFile.name}`;
             const { error: uploadError } = await supabase.storage
                 .from("evenements")
@@ -316,26 +409,36 @@ import Layout from "../../layouts/Layout.astro";
                 .getPublicUrl(path).data.publicUrl;
         }
 
-        const { error } = await supabase.from("evenements").insert({
+        const eventPayload = {
             date: formData.get("date"),
             heure_debut: formData.get("heure_debut"),
             heure_fin: formData.get("heure_fin"),
             titre: formData.get("titre"),
+            description: formData.get("description") || null,
             lien: formData.get("lien") || null,
             image: imageUrl,
-        });
+        };
+
+        const { error } = editingEvent
+            ? await supabase
+                  .from("evenements")
+                  .update(eventPayload)
+                  .eq("id", editingEvent.id)
+            : await supabase.from("evenements").insert(eventPayload);
 
         if (error) {
             alert(error.message);
             return;
         }
 
-        addEventForm.reset();
+        resetForm();
         loadEvents();
     });
 
+    cancelEditButton.addEventListener("click", () => resetForm());
+
     logoutButton.addEventListener("click", async () => {
         await supabase.auth.signOut();
-        location.reload();
+        window.location.href = "/admin/login";
     });
 </script>

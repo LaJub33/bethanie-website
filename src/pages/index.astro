@@ -3,10 +3,14 @@ import Layout from "../layouts/Layout.astro";
 import SellDisplay from "../components/SellDisplay.astro";
 import Newsletter from "../components/Newsletter.astro";
 import ContactBanner from "../components/ContactBanner.astro";
+import NotificationBanner from "../components/NotificationBanner.astro";
 ---
 
 <Layout title="Accueil">
     <div class="wrapper">
+        <!-- Bandeau notification prochain évènement -->
+        <NotificationBanner />
+
         <!-- Hero Section -->
         <section class="hero">
             <div class="col1">

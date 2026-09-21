@@ -93,12 +93,9 @@ import Layout from '../layouts/Layout.astro';
             const jour = date.toLocaleDateString("fr-FR", { day: "numeric" });
             const mois = date.toLocaleDateString("fr-FR", { month: "short" });
 
-            const row = document.createElement(evenement.lien ? "a" : "div");
+            const row = document.createElement("a");
             row.className = "evenement";
-            if (evenement.lien) {
-                (row as HTMLAnchorElement).href = evenement.lien;
-                (row as HTMLAnchorElement).target = "_blank";
-            }
+            row.href = `/l-agenda/evenement?id=${evenement.id}`;
 
             row.innerHTML = `
                 <div class="date">

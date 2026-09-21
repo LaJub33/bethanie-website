@@ -1,0 +1,79 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Connexion - Administration">
+    <div class="wrapper">
+        <section class="admin-login">
+            <h1>Connexion administration</h1>
+
+            <form id="login-form">
+                <input type="email" name="email" placeholder="Email" required />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Mot de passe"
+                    required
+                />
+                <button type="submit" class="btn">Se connecter</button>
+                <p id="login-error" class="error" hidden></p>
+            </form>
+        </section>
+    </div>
+</Layout>
+
+<style is:global>
+    .admin-login {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        max-width: 400px;
+    }
+
+    .admin-login #login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .admin-login #login-form input {
+        padding: 12px;
+        border: 1px solid var(--color-body40W);
+        border-radius: var(--border-radius);
+    }
+
+    .admin-login .error {
+        color: red;
+    }
+</style>
+
+<script>
+    import { supabase } from "../../lib/supabase.js";
+
+    const loginForm =
+        document.querySelector<HTMLFormElement>("#login-form")!;
+    const loginError = document.querySelector<HTMLElement>("#login-error")!;
+
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+    if (session) window.location.href = "/admin";
+
+    loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(loginForm);
+
+        const { error } = await supabase.auth.signInWithPassword({
+            email: formData.get("email") as string,
+            password: formData.get("password") as string,
+        });
+
+        if (error) {
+            loginError.textContent = error.message;
+            loginError.hidden = false;
+            return;
+        }
+
+        window.location.href = "/admin";
+    });
+</script>
