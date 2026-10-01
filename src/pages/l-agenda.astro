@@ -83,7 +83,8 @@ import Layout from '../layouts/Layout.astro';
             ),
         );
         data = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-    } catch {
+    } catch (error) {
+        console.error("Erreur de chargement des évènements :", error);
         data = null;
     }
 
