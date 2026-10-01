@@ -67,18 +67,27 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <script>
-    import { supabase } from "../lib/supabase.js";
+    import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+    import { db } from "../lib/firebase.js";
 
     const eventsList =
         document.querySelector<HTMLElement>("#evenements-list")!;
 
-    const { data, error } = await supabase
-        .from("evenements")
-        .select("*")
-        .gte("date", new Date().toISOString().slice(0, 10))
-        .order("date", { ascending: true });
+    let data: any[] | null = null;
+    try {
+        const snapshot = await getDocs(
+            query(
+                collection(db, "evenements"),
+                where("date", ">=", new Date().toISOString().slice(0, 10)),
+                orderBy("date", "asc"),
+            ),
+        );
+        data = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+    } catch {
+        data = null;
+    }
 
-    if (error || !data) {
+    if (!data) {
         eventsList.remove();
     } else if (data.length === 0) {
         eventsList.innerHTML = `

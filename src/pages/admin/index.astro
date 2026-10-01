@@ -172,7 +172,9 @@ import Layout from "../../layouts/Layout.astro";
 </style>
 
 <script>
-    import { supabase } from "../../lib/supabase.js";
+    import { signOut } from "firebase/auth";
+    import { doc, getDoc, setDoc } from "firebase/firestore";
+    import { auth, db } from "../../lib/firebase.js";
     import { requireAdminSession } from "../../lib/adminAuth.js";
 
     const adminHome = document.querySelector<HTMLElement>(".admin-home")!;
@@ -182,35 +184,33 @@ import Layout from "../../layouts/Layout.astro";
     const bandeauToggle =
         document.querySelector<HTMLInputElement>("#bandeau-toggle")!;
 
+    const settingsRef = doc(db, "site_settings", "main");
+
     const session = await requireAdminSession();
     if (session) {
-        adminEmail.textContent = session.user.email ?? "";
+        adminEmail.textContent = session.email ?? "";
         adminHome.hidden = false;
 
-        const { data: settings } = await supabase
-            .from("site_settings")
-            .select("bandeau_evenement_actif")
-            .eq("id", 1)
-            .maybeSingle();
-
-        bandeauToggle.checked = settings?.bandeau_evenement_actif ?? false;
+        const settings = await getDoc(settingsRef);
+        bandeauToggle.checked = settings.data()?.bandeau_evenement_actif ?? false;
     }
 
     bandeauToggle.addEventListener("change", async () => {
         const checked = bandeauToggle.checked;
-        const { error } = await supabase
-            .from("site_settings")
-            .update({ bandeau_evenement_actif: checked })
-            .eq("id", 1);
-
-        if (error) {
+        try {
+            await setDoc(
+                settingsRef,
+                { bandeau_evenement_actif: checked },
+                { merge: true },
+            );
+        } catch (error: any) {
             alert(error.message);
             bandeauToggle.checked = !checked;
         }
     });
 
     logoutButton.addEventListener("click", async () => {
-        await supabase.auth.signOut();
+        await signOut(auth);
         window.location.href = "/admin/login";
     });
 </script>

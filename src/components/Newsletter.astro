@@ -17,20 +17,20 @@
                 Des nouvelles simples, saisonnières, écrites depuis la terre.
             </p>
         </div>
-        <form>
+        <form method="post" target="brevo-newsletter-frame">
             <input
                 type="email"
-                name="email"
+                name="EMAIL"
                 placeholder="email@labethanie.fr"
                 required
             />
+            <input type="hidden" name="email_address_check" value="" />
+            <input type="hidden" name="locale" value="fr" />
             <button type="submit" class="btn">S'abonner</button>
         </form>
+        <iframe name="brevo-newsletter-frame" hidden></iframe>
 
         <p class="confirmation" hidden>Merci, vous êtes abonné !</p>
-        <p class="already-subscribed" hidden>
-            Cet email est déjà inscrit à la newsletter.
-        </p>
         <p class="error-message" hidden>
             Une erreur est survenue, veuillez réessayer.
         </p>
@@ -145,16 +145,16 @@
 </style>
 
 <script>
-    import { supabase } from "../lib/supabase.js";
+    const BREVO_FORM_ACTION = import.meta.env.PUBLIC_BREVO_FORM_ACTION;
 
     const form = document.querySelector<HTMLFormElement>(
         ".bandeau-newsletter form",
     );
+    const frame = document.querySelector<HTMLIFrameElement>(
+        "iframe[name=brevo-newsletter-frame]",
+    );
     const confirmation = document.querySelector<HTMLElement>(
         ".bandeau-newsletter .confirmation",
-    );
-    const alreadySubscribedMessage = document.querySelector<HTMLElement>(
-        ".bandeau-newsletter .already-subscribed",
     );
     const errorMessage = document.querySelector<HTMLElement>(
         ".bandeau-newsletter .error-message",
@@ -162,38 +162,33 @@
     const submitButton =
         form?.querySelector<HTMLButtonElement>("button[type=submit]");
 
-    form?.addEventListener("submit", async (event) => {
-        event.preventDefault();
+    if (form) form.action = BREVO_FORM_ACTION;
 
-        const email = new FormData(form).get("email");
-        if (typeof email !== "string" || !email) return;
+    form?.addEventListener("submit", (event) => {
+        const email = new FormData(form).get("EMAIL");
+        if (typeof email !== "string" || !email) {
+            event.preventDefault();
+            return;
+        }
 
-        errorMessage?.setAttribute("hidden", "");
-        alreadySubscribedMessage?.setAttribute("hidden", "");
-        if (submitButton) submitButton.disabled = true;
-
-        const { data, error } = await supabase.functions.invoke(
-            "subscribe-newsletter",
-            { body: { email } },
-        );
-
-        if (submitButton) submitButton.disabled = false;
-
-        if (error) {
+        if (!BREVO_FORM_ACTION) {
+            event.preventDefault();
             errorMessage?.removeAttribute("hidden");
             return;
         }
 
-        form.reset();
+        errorMessage?.setAttribute("hidden", "");
+        if (submitButton) submitButton.disabled = true;
 
-        const messageToShow = data?.alreadySubscribed
-            ? alreadySubscribedMessage
-            : confirmation;
-
-        messageToShow?.removeAttribute("hidden");
-
-        setTimeout(() => {
-            messageToShow?.setAttribute("hidden", "");
-        }, 2000);
+        frame?.addEventListener(
+            "load",
+            () => {
+                if (submitButton) submitButton.disabled = false;
+                form.reset();
+                confirmation?.removeAttribute("hidden");
+                setTimeout(() => confirmation?.setAttribute("hidden", ""), 4000);
+            },
+            { once: true },
+        );
     });
 </script>

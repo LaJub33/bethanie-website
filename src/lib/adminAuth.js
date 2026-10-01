@@ -1,14 +1,22 @@
-import { supabase } from "./supabase.js";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase.js";
+
+function getCurrentUser() {
+    return new Promise((resolve) => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            unsubscribe();
+            resolve(user);
+        });
+    });
+}
 
 export async function requireAdminSession() {
-    const {
-        data: { session },
-    } = await supabase.auth.getSession();
+    const user = await getCurrentUser();
 
-    if (!session) {
+    if (!user) {
         window.location.href = "/admin/login";
         return null;
     }
 
-    return session;
+    return user;
 }

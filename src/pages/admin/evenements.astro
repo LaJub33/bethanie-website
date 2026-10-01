@@ -9,7 +9,7 @@ import Layout from "../../layouts/Layout.astro";
                 <a href="/admin" class="back-link"
                     ><i class="ph ph-arrow-left"></i> Administration</a
                 >
-                <span id="supabase-status" class="chip chip-checking"
+                <span id="backend-status" class="chip chip-checking"
                     >Vérification…</span
                 >
             </div>
@@ -28,9 +28,17 @@ import Layout from "../../layouts/Layout.astro";
                     </div>
                 </div>
 
-                <h2>Évènements à venir</h2>
-                <div id="events-list"></div>
+                <div class="admin-section">
+                    <h2>Évènements à venir</h2>
+                    <div id="events-list"></div>
+                </div>
 
+                <div class="admin-section">
+                    <h2>Évènements passés</h2>
+                    <div id="past-events-list"></div>
+                </div>
+
+                <div class="admin-section">
                 <h2 id="event-form-title">Ajouter un évènement</h2>
                 <form id="add-event-form">
                     <div class="field">
@@ -101,6 +109,7 @@ import Layout from "../../layouts/Layout.astro";
                         >
                     </div>
                 </form>
+                </div>
             </div>
         </section>
     </div>
@@ -151,6 +160,18 @@ import Layout from "../../layouts/Layout.astro";
     .chip-offline {
         background-color: #c0392b;
         color: var(--color-white);
+    }
+
+    #admin-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .admin-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
     }
 
     #add-event-form:not([hidden]) {
@@ -237,21 +258,40 @@ import Layout from "../../layouts/Layout.astro";
         border-radius: var(--border-radius);
         flex-shrink: 0;
     }
+
+    .no-events {
+        color: var(--color-body40W);
+    }
 </style>
 
 <script>
-    import { supabase } from "../../lib/supabase.js";
+    import { signOut } from "firebase/auth";
+    import {
+        addDoc,
+        collection,
+        deleteDoc,
+        doc,
+        getDocs,
+        orderBy,
+        query,
+        updateDoc,
+    } from "firebase/firestore";
+    import { auth, db } from "../../lib/firebase.js";
+    import { uploadImage } from "../../lib/cloudinary.js";
     import { requireAdminSession } from "../../lib/adminAuth.js";
 
     const adminPanel = document.querySelector<HTMLElement>("#admin-panel")!;
     const adminEmail = document.querySelector<HTMLElement>("#admin-email")!;
     const eventsList = document.querySelector<HTMLElement>("#events-list")!;
+    const pastEventsList =
+        document.querySelector<HTMLElement>("#past-events-list")!;
     const addEventForm =
         document.querySelector<HTMLFormElement>("#add-event-form")!;
     const logoutButton =
         document.querySelector<HTMLButtonElement>("#logout-button")!;
-    const supabaseStatus =
-        document.querySelector<HTMLElement>("#supabase-status")!;
+    const backendStatus =
+        document.querySelector<HTMLElement>("#backend-status")!;
+    const eventsCollection = collection(db, "evenements");
     const eventFormTitle =
         document.querySelector<HTMLElement>("#event-form-title")!;
     const submitEventButton =
@@ -299,86 +339,105 @@ import Layout from "../../layouts/Layout.astro";
         addEventForm.scrollIntoView({ behavior: "smooth" });
     }
 
-    async function checkSupabaseStatus() {
+    async function checkBackendStatus() {
         const timeout = new Promise<never>((_, reject) =>
             setTimeout(() => reject(new Error("timeout")), 5000),
         );
 
         try {
-            const result = await Promise.race([
-                supabase.from("evenements").select("id", {
-                    count: "exact",
-                    head: true,
-                }),
-                timeout,
-            ]);
+            await Promise.race([getDocs(eventsCollection), timeout]);
 
-            if (result.error) throw result.error;
-
-            supabaseStatus.textContent = "Supabase actif";
-            supabaseStatus.className = "chip chip-online";
+            backendStatus.textContent = "Firebase actif";
+            backendStatus.className = "chip chip-online";
         } catch {
-            supabaseStatus.textContent =
-                "Supabase injoignable (projet en pause ?)";
-            supabaseStatus.className = "chip chip-offline";
+            backendStatus.textContent = "Firebase injoignable";
+            backendStatus.className = "chip chip-offline";
         }
     }
 
-    checkSupabaseStatus();
+    checkBackendStatus();
+
+    function renderEventRow(evenement: any) {
+        const row = document.createElement("div");
+        row.className = "event-row";
+
+        if (evenement.image) {
+            const thumb = document.createElement("img");
+            thumb.src = evenement.image;
+            thumb.alt = "";
+            thumb.className = "event-thumb";
+            row.appendChild(thumb);
+        }
+
+        const info = document.createElement("span");
+        info.textContent = `${evenement.date} · ${evenement.heure_debut}–${evenement.heure_fin} · ${evenement.titre}`;
+
+        const editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.textContent = "Modifier";
+        editButton.addEventListener("click", () => startEdit(evenement));
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.textContent = "Supprimer";
+        deleteButton.addEventListener("click", async () => {
+            await deleteDoc(doc(db, "evenements", evenement.id));
+            if (editingEvent?.id === evenement.id) resetForm();
+            loadEvents();
+        });
+
+        row.append(info, editButton, deleteButton);
+        return row;
+    }
 
     async function loadEvents() {
-        const { data, error } = await supabase
-            .from("evenements")
-            .select("*")
-            .order("date", { ascending: true });
-
-        if (error) {
+        let snapshot;
+        try {
+            snapshot = await getDocs(
+                query(eventsCollection, orderBy("date", "asc")),
+            );
+        } catch (error: any) {
             eventsList.innerHTML = `<p>Erreur : ${error.message}</p>`;
+            pastEventsList.innerHTML = "";
             return;
         }
 
+        const today = new Date().toISOString().slice(0, 10);
+        const evenements = snapshot.docs.map((docSnapshot) => ({
+            id: docSnapshot.id,
+            ...docSnapshot.data(),
+        }));
+
+        const upcoming = evenements.filter((e: any) => e.date >= today);
+        const past = evenements
+            .filter((e: any) => e.date < today)
+            .reverse();
+
         eventsList.innerHTML = "";
-        for (const evenement of data) {
-            const row = document.createElement("div");
-            row.className = "event-row";
-
-            if (evenement.image) {
-                const thumb = document.createElement("img");
-                thumb.src = evenement.image;
-                thumb.alt = "";
-                thumb.className = "event-thumb";
-                row.appendChild(thumb);
+        if (upcoming.length === 0) {
+            eventsList.innerHTML =
+                '<p class="no-events">Pas d\'évènements à venir.</p>';
+        } else {
+            for (const evenement of upcoming) {
+                eventsList.appendChild(renderEventRow(evenement));
             }
+        }
 
-            const info = document.createElement("span");
-            info.textContent = `${evenement.date} · ${evenement.heure_debut}–${evenement.heure_fin} · ${evenement.titre}`;
-
-            const editButton = document.createElement("button");
-            editButton.type = "button";
-            editButton.textContent = "Modifier";
-            editButton.addEventListener("click", () => startEdit(evenement));
-
-            const deleteButton = document.createElement("button");
-            deleteButton.type = "button";
-            deleteButton.textContent = "Supprimer";
-            deleteButton.addEventListener("click", async () => {
-                await supabase
-                    .from("evenements")
-                    .delete()
-                    .eq("id", evenement.id);
-                if (editingEvent?.id === evenement.id) resetForm();
-                loadEvents();
-            });
-
-            row.append(info, editButton, deleteButton);
-            eventsList.appendChild(row);
+        pastEventsList.innerHTML = "";
+        if (past.length === 0) {
+            pastEventsList.innerHTML =
+                '<p class="no-events">Pas d\'évènements passés.</p>';
+        } else {
+            for (const evenement of past) {
+                pastEventsList.appendChild(renderEventRow(evenement));
+            }
         }
     }
 
     const session = await requireAdminSession();
     if (session) {
         adminPanel.hidden = false;
-        adminEmail.textContent = session.user.email ?? "";
+        adminEmail.textContent = session.email ?? "";
         loadEvents();
     }
 
@@ -394,19 +453,12 @@ import Layout from "../../layouts/Layout.astro";
                 return;
             }
 
-            const path = `${crypto.randomUUID()}-${imageFile.name}`;
-            const { error: uploadError } = await supabase.storage
-                .from("evenements")
-                .upload(path, imageFile);
-
-            if (uploadError) {
-                alert(uploadError.message);
+            try {
+                imageUrl = await uploadImage(imageFile);
+            } catch (error: any) {
+                alert(error.message);
                 return;
             }
-
-            imageUrl = supabase.storage
-                .from("evenements")
-                .getPublicUrl(path).data.publicUrl;
         }
 
         const eventPayload = {
@@ -419,14 +471,16 @@ import Layout from "../../layouts/Layout.astro";
             image: imageUrl,
         };
 
-        const { error } = editingEvent
-            ? await supabase
-                  .from("evenements")
-                  .update(eventPayload)
-                  .eq("id", editingEvent.id)
-            : await supabase.from("evenements").insert(eventPayload);
-
-        if (error) {
+        try {
+            if (editingEvent) {
+                await updateDoc(
+                    doc(db, "evenements", editingEvent.id),
+                    eventPayload,
+                );
+            } else {
+                await addDoc(eventsCollection, eventPayload);
+            }
+        } catch (error: any) {
             alert(error.message);
             return;
         }
@@ -438,7 +492,7 @@ import Layout from "../../layouts/Layout.astro";
     cancelEditButton.addEventListener("click", () => resetForm());
 
     logoutButton.addEventListener("click", async () => {
-        await supabase.auth.signOut();
+        await signOut(auth);
         window.location.href = "/admin/login";
     });
 </script>

@@ -127,7 +127,8 @@ import Layout from "../../layouts/Layout.astro";
 </style>
 
 <script>
-    import { supabase } from "../../lib/supabase.js";
+    import { doc, getDoc } from "firebase/firestore";
+    import { db } from "../../lib/firebase.js";
 
     const content = document.querySelector<HTMLElement>("#evenement-content")!;
     const notFound =
@@ -146,13 +147,17 @@ import Layout from "../../layouts/Layout.astro";
     if (!id) {
         notFound.hidden = false;
     } else {
-        const { data: evenement, error } = await supabase
-            .from("evenements")
-            .select("*")
-            .eq("id", id)
-            .maybeSingle();
+        let evenement: any = null;
+        try {
+            const snapshot = await getDoc(doc(db, "evenements", id));
+            if (snapshot.exists()) {
+                evenement = { id: snapshot.id, ...snapshot.data() };
+            }
+        } catch {
+            evenement = null;
+        }
 
-        if (error || !evenement) {
+        if (!evenement) {
             notFound.hidden = false;
         } else {
             const date = new Date(`${evenement.date}T00:00:00`);

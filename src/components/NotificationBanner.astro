@@ -109,7 +109,17 @@
 </style>
 
 <script>
-    import { supabase } from "../lib/supabase.js";
+    import {
+        collection,
+        doc,
+        getDoc,
+        getDocs,
+        limit,
+        orderBy,
+        query,
+        where,
+    } from "firebase/firestore";
+    import { db } from "../lib/firebase.js";
 
     const banner = document.querySelector<HTMLElement>("#notification-banner")!;
     const link =
@@ -123,20 +133,21 @@
     )!;
     const infos = document.querySelector<HTMLElement>("#notification-infos")!;
 
-    const { data: settings } = await supabase
-        .from("site_settings")
-        .select("bandeau_evenement_actif")
-        .eq("id", 1)
-        .maybeSingle();
+    const settings = await getDoc(doc(db, "site_settings", "main"));
 
-    if (settings?.bandeau_evenement_actif) {
-        const { data: evenement } = await supabase
-            .from("evenements")
-            .select("*")
-            .gte("date", new Date().toISOString().slice(0, 10))
-            .order("date", { ascending: true })
-            .limit(1)
-            .maybeSingle();
+    if (settings.data()?.bandeau_evenement_actif) {
+        const snapshot = await getDocs(
+            query(
+                collection(db, "evenements"),
+                where("date", ">=", new Date().toISOString().slice(0, 10)),
+                orderBy("date", "asc"),
+                limit(1),
+            ),
+        );
+        const evenementDoc = snapshot.docs[0];
+        const evenement = evenementDoc
+            ? { id: evenementDoc.id, ...evenementDoc.data() }
+            : null;
 
         if (evenement) {
             link.href = `/l-agenda/evenement?id=${evenement.id}`;
