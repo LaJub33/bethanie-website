@@ -52,16 +52,29 @@
 
             <div class="adresse-box">
                 <p class="adresse-intro">
-                    Le retrait des commandes et le marché à la ferme se font au
-                    :
+                    Le retrait des commandes se fait à :
                 </p>
-                <a
-                    href="https://maps.app.goo.gl/6VbeWGdDoP7WJfyD7"
-                    target="_blank"
-                    class="adresse-lien"
-                >
-                    181 Fournié Ouest, Saint Morillon 33650
-                </a>
+                <div class="row">
+                    <div class="col">
+                        <a
+                            href="https://maps.app.goo.gl/6VbeWGdDoP7WJfyD7"
+                            target="_blank"
+                            class="adresse-lien"
+                        >
+                            La ferme (Saint-Morillon)
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a
+                            href="https://maps.app.goo.gl/JXB3YYyD4fZYrzcq5"
+                            target="_blank"
+                            class="adresse-lien"
+                        >
+                            La Manufacture Le Bayon (Bordeaux)
+                        </a>
+                    </div>
+                </div>
+
                 <img src="/MapPin.svg" alt="" class="map-pin" />
             </div>
         </div>
@@ -193,6 +206,22 @@
     .adresse-intro {
         font-size: 14px;
         color: var(--color-body40W);
+    }
+
+    .adresse-box .row {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .adresse-box .row .col {
+        flex: 1;
+        padding: 0 16px;
+    }
+
+    .adresse-box .row .col:first-child {
+        padding-left: 0;
+        border-right: 1px solid var(--color-body40W);
     }
 
     .adresse-lien {
