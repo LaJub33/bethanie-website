@@ -7,12 +7,12 @@
         <div class="row1">
             <nav>
                 <ul>
-                    <li><a href="#about">Accueil</a></li>
-                    <li><a href="#services">Se nourrir</a></li>
-                    <li><a href="#contact">La ferme</a></li>
-                    <li><a href="#contact">L'association</a></li>
-                    <li><a href="#contact">L'agenda</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/se-nourrir">Se nourrir</a></li>
+                    <li><a href="/la-ferme">La ferme</a></li>
+                    <li><a href="/l-association">L'association</a></li>
+                    <li><a href="/l-agenda">L'agenda</a></li>
+                    <li><a href="/contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -42,16 +42,13 @@
     </div>
     <div class="logo-container">
         <a href="">
-            <img
-                src="/logo-full-white.svg"
-                alt="Logo de Bethanie"
-            />
+            <img src="/logo-full-white.svg" alt="Logo de Bethanie" />
         </a>
     </div>
     <div class="credentials-container">
         <div class="row1">
             <a href="">@fermelabethanie</a>
-            <p>06 06 06 06 06</p>
+            <p>06 05 71 88 48</p>
             <a href="mailto:contact@labethanie.fr">contact@labethanie.fr</a>
             <p>Saint-Morillon, 33650 France</p>
         </div>
@@ -196,8 +193,9 @@
         const errorMessage = document.querySelector<HTMLElement>(
             "footer .list-container .row2 .error-message",
         );
-        const submitButton =
-            form?.querySelector<HTMLButtonElement>("button[type=submit]");
+        const submitButton = form?.querySelector<HTMLButtonElement>(
+            "button[type=submit]",
+        );
 
         if (form) form.action = BREVO_FORM_ACTION;
 
