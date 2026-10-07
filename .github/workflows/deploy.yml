@@ -39,4 +39,4 @@ jobs:
           username: ${{ secrets.FTP_USERNAME_PROD }}
           password: ${{ secrets.FTP_PASSWORD_PROD }}
           local-dir: ./dist/
-          server-dir: ../
+          server-dir: /domains/labethanie.fr/public_html/
