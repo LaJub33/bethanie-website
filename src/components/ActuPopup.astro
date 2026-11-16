@@ -1,0 +1,418 @@
+---
+
+---
+
+<button type="button" id="actu-reduit" class="actu-reduit" hidden>
+    <span class="actu-reduit-titre">L'actu de la Béthanie</span>
+    <span class="actu-reduit-cta">Cliquer pour voir l'actu</span>
+</button>
+
+<div id="actu-popup" class="actu-overlay" hidden>
+    <div
+        class="actu-popup"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="actu-titre"
+    >
+        <div class="actu-label">
+            <p class="actu-label-text">
+                <span>L'actu</span>
+                <span>de la</span>
+                <span>Béthanie</span>
+            </p>
+        </div>
+
+        <div class="actu-body">
+            <img id="actu-image" class="actu-image" alt="" />
+            <div class="actu-content">
+                <h2 id="actu-titre" class="actu-titre"></h2>
+                <p id="actu-sous-titre" class="actu-sous-titre"></p>
+                <p id="actu-texte" class="actu-texte"></p>
+                <a id="actu-bouton" class="btn actu-bouton" href=""></a>
+            </div>
+        </div>
+
+        <button
+            type="button"
+            id="actu-close"
+            class="actu-close"
+            aria-label="Fermer"
+        >
+            <i class="ph ph-x"></i>
+        </button>
+    </div>
+</div>
+
+<style is:global>
+    /* Bandeau réduit */
+    .actu-reduit {
+        position: relative;
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+        padding: 0;
+        border: none;
+        border-radius: var(--border-radius);
+        background-color: var(--color-primary);
+        color: var(--color-white);
+        text-align: left;
+        text-transform: uppercase;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .actu-reduit[hidden] {
+        display: none;
+    }
+
+    .actu-reduit::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("/laitue.jpg") center / cover no-repeat;
+        opacity: 0.1;
+        pointer-events: none;
+    }
+
+    .actu-reduit-titre,
+    .actu-reduit-cta {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .actu-reduit-titre {
+        flex: 1;
+        padding: 16px;
+        font-size: 32px;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+    .actu-reduit-cta {
+        flex-shrink: 0;
+        justify-content: center;
+        padding: 16px 40px;
+        border-left: 1px solid rgba(9, 19, 15, 0.15);
+        font-size: 16px;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+    }
+
+    .actu-reduit:hover .actu-reduit-cta,
+    .actu-reduit:focus-visible .actu-reduit-cta {
+        background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    @media (max-width: 700px) {
+        .actu-reduit {
+            flex-direction: column;
+        }
+
+        .actu-reduit-cta {
+            padding: 24px 16px;
+            border-left: none;
+            border-top: 1px solid rgba(9, 19, 15, 0.15);
+        }
+    }
+
+    .actu-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        background-color: rgba(9, 19, 15, 0.5);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .actu-overlay[hidden] {
+        display: none;
+    }
+
+    .actu-overlay.visible {
+        opacity: 1;
+    }
+
+    .actu-popup {
+        position: relative;
+        display: flex;
+        width: 100%;
+        max-width: 1250px;
+        max-height: 100%;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        border-radius: var(--border-radius);
+        background-color: var(--color-background);
+        box-shadow: 0 8px 40px rgba(9, 19, 15, 0.2);
+        transform: translateY(16px);
+        transition: transform 0.3s ease;
+    }
+
+    .actu-overlay.visible .actu-popup {
+        transform: translateY(0);
+    }
+
+    /* Colonne verte "L'actu de la Béthanie" */
+    .actu-label {
+        position: relative;
+        flex-shrink: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        width: 228px;
+        padding: 24px 16px 8px;
+        background-color: var(--color-primary);
+        overflow: hidden;
+    }
+
+    .actu-label::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("/laitue.jpg") center / cover no-repeat;
+        opacity: 0.1;
+        pointer-events: none;
+    }
+
+    .actu-label-text {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        font-size: 40px;
+        font-weight: 800;
+        line-height: 1.3;
+        text-transform: uppercase;
+        color: var(--color-white);
+        white-space: nowrap;
+    }
+
+    /* Contenu */
+    .actu-body {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: stretch;
+        gap: 24px;
+        padding: 24px 80px 24px 40px;
+    }
+
+    .actu-image {
+        flex: 0 1 434px;
+        min-width: 0;
+        min-height: 240px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+    }
+
+    .actu-content {
+        flex: 1 1 400px;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .actu-titre {
+        font-size: 32px;
+        font-weight: 800;
+        line-height: 1.3;
+        color: var(--color-primary);
+    }
+
+    .actu-sous-titre {
+        font-size: 16px;
+        font-weight: 800;
+        text-transform: uppercase;
+    }
+
+    .actu-texte {
+        font-size: 12px;
+        white-space: pre-line;
+    }
+
+    .actu-bouton {
+        padding: 8px 16px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .actu-close {
+        position: absolute;
+        top: 24px;
+        right: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: none;
+        color: var(--color-primary);
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    /* Écran trop étroit : la photo disparaît */
+    @media (max-width: 1000px) {
+        .actu-image {
+            display: none;
+        }
+    }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+        .actu-overlay {
+            padding: 16px;
+        }
+
+        .actu-popup {
+            flex-direction: column;
+            max-width: 420px;
+        }
+
+        .actu-label {
+            width: auto;
+            justify-content: flex-start;
+            padding: 64px 8px 8px;
+        }
+
+        .actu-label-text {
+            writing-mode: horizontal-tb;
+            transform: none;
+            font-size: 32px;
+            white-space: normal;
+        }
+
+        .actu-body {
+            padding: 24px;
+        }
+
+        .actu-titre {
+            font-size: 24px;
+        }
+
+        .actu-close {
+            top: 8px;
+            right: 8px;
+            color: var(--color-white);
+        }
+    }
+</style>
+
+<script>
+    import { doc, getDoc } from "firebase/firestore";
+    import { db } from "../lib/firebase.js";
+
+    const STORAGE_KEY = "actu-popup-fermee";
+    const DELAY_MS = 1000;
+    const arrivee = Date.now();
+
+    const reduit = document.querySelector<HTMLButtonElement>("#actu-reduit")!;
+    const overlay = document.querySelector<HTMLElement>("#actu-popup")!;
+    const image = document.querySelector<HTMLImageElement>("#actu-image")!;
+    const titre = document.querySelector<HTMLElement>("#actu-titre")!;
+    const sousTitre = document.querySelector<HTMLElement>("#actu-sous-titre")!;
+    const texte = document.querySelector<HTMLElement>("#actu-texte")!;
+    const bouton = document.querySelector<HTMLAnchorElement>("#actu-bouton")!;
+    const closeButton =
+        document.querySelector<HTMLButtonElement>("#actu-close")!;
+
+    function dejaFermee() {
+        try {
+            return sessionStorage.getItem(STORAGE_KEY) === "1";
+        } catch {
+            return false;
+        }
+    }
+
+    function memoriserFermeture() {
+        try {
+            sessionStorage.setItem(STORAGE_KEY, "1");
+        } catch {}
+    }
+
+    function setText(element: HTMLElement, value?: string | null) {
+        if (value) {
+            element.textContent = value;
+        } else {
+            element.remove();
+        }
+    }
+
+    function ouvrir() {
+        overlay.hidden = false;
+        document.body.style.overflow = "hidden";
+        requestAnimationFrame(() => overlay.classList.add("visible"));
+        closeButton.focus({ preventScroll: true });
+        document.addEventListener("keydown", onKeydown);
+    }
+
+    function fermer() {
+        memoriserFermeture();
+        reduit.hidden = false;
+        reduit.focus({ preventScroll: true });
+        overlay.classList.remove("visible");
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", onKeydown);
+        setTimeout(() => {
+            overlay.hidden = true;
+        }, 300);
+    }
+
+    function onKeydown(event: KeyboardEvent) {
+        if (event.key === "Escape") fermer();
+    }
+
+    closeButton.addEventListener("click", fermer);
+    reduit.addEventListener("click", ouvrir);
+    overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) fermer();
+    });
+
+    async function init() {
+        const snapshot = await getDoc(doc(db, "site_settings", "actu"));
+        const actu = snapshot.data();
+        if (!actu?.actif || !actu.titre) return;
+
+        titre.textContent = actu.titre;
+        setText(sousTitre, actu.sous_titre);
+        setText(texte, actu.texte);
+
+        if (actu.bouton_label && actu.bouton_lien) {
+            bouton.textContent = actu.bouton_label;
+            bouton.href = actu.bouton_lien;
+            const url = new URL(actu.bouton_lien, window.location.href);
+            if (url.origin !== window.location.origin) {
+                bouton.target = "_blank";
+                bouton.rel = "noopener";
+            }
+        } else {
+            bouton.remove();
+        }
+
+        if (actu.image) {
+            image.src = actu.image;
+        } else {
+            image.remove();
+        }
+
+        // Déjà fermée pendant cette visite : on affiche seulement le bandeau réduit
+        if (dejaFermee()) {
+            reduit.hidden = false;
+            return;
+        }
+
+        const restant = DELAY_MS - (Date.now() - arrivee);
+        setTimeout(ouvrir, Math.max(0, restant));
+    }
+
+    init().catch(() => {});
+</script>

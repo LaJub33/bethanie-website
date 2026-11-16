@@ -1,0 +1,348 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Administration - Actu">
+    <div class="wrapper">
+        <section class="admin-actu">
+            <div class="header-row">
+                <a href="/admin" class="back-link"
+                    ><i class="ph ph-arrow-left"></i> Administration</a
+                >
+            </div>
+
+            <div id="actu-panel" hidden>
+                <h1>L'actu de la Béthanie</h1>
+
+                <label class="setting-row">
+                    <div>
+                        <p class="setting-label">Afficher la popup d'actu</p>
+                        <p class="setting-hint">
+                            La popup s'ouvre sur la page d'accueil 1 seconde
+                            après l'arrivée du visiteur.
+                        </p>
+                    </div>
+                    <span class="switch">
+                        <input type="checkbox" id="actu-toggle" />
+                        <span class="switch-track"></span>
+                    </span>
+                </label>
+
+                <form id="actu-form">
+                    <h2>Contenu</h2>
+                    <div class="field">
+                        <label for="actu-titre">Titre</label>
+                        <input id="actu-titre" type="text" name="titre" required />
+                    </div>
+                    <div class="field">
+                        <label for="actu-sous-titre">Sous-titre (optionnel)</label>
+                        <input id="actu-sous-titre" type="text" name="sous_titre" />
+                    </div>
+                    <div class="field">
+                        <label for="actu-texte">Texte (optionnel)</label>
+                        <textarea id="actu-texte" name="texte" rows="5"></textarea>
+                    </div>
+                    <div class="field">
+                        <label for="actu-bouton-label"
+                            >Intitulé du bouton (optionnel)</label
+                        >
+                        <input
+                            id="actu-bouton-label"
+                            type="text"
+                            name="bouton_label"
+                        />
+                    </div>
+                    <div class="field">
+                        <label for="actu-bouton-lien"
+                            >Lien du bouton (optionnel)</label
+                        >
+                        <input
+                            id="actu-bouton-lien"
+                            type="url"
+                            name="bouton_lien"
+                            placeholder="https://…"
+                        />
+                        <p class="field-hint">
+                            Le bouton n'apparaît que si l'intitulé et le lien
+                            sont remplis.
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label for="actu-image">Photo (optionnel)</label>
+                        <div id="actu-image-current" class="image-current" hidden>
+                            <img id="actu-image-preview" alt="" />
+                            <button type="button" id="actu-image-remove"
+                                >Retirer la photo</button
+                            >
+                        </div>
+                        <input
+                            id="actu-image"
+                            type="file"
+                            name="image"
+                            accept="image/jpeg,image/png"
+                        />
+                        <p class="field-hint">
+                            Masquée automatiquement sur les écrans étroits.
+                        </p>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="actu-submit" class="btn"
+                            >Enregistrer</button
+                        >
+                        <span id="actu-status" class="field-hint"></span>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</Layout>
+
+<style is:global>
+    .admin-actu {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        max-width: 600px;
+    }
+
+    .admin-actu .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .admin-actu .back-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: var(--color-body);
+    }
+
+    #actu-panel:not([hidden]) {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    #actu-panel h1 {
+        font-size: 32px;
+    }
+
+    #actu-form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    #actu-form h2 {
+        font-size: 20px;
+    }
+
+    #actu-form input:not([type="file"]),
+    #actu-form textarea {
+        padding: 12px;
+        border: 1px solid var(--color-body40W);
+        border-radius: var(--border-radius);
+        font-family: inherit;
+        resize: vertical;
+    }
+
+    .admin-actu .field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .admin-actu .field label {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .admin-actu .field-hint {
+        font-size: 12px;
+        color: var(--color-body40W);
+    }
+
+    .admin-actu .form-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .image-current:not([hidden]) {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+    }
+
+    .image-current img {
+        width: 120px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+    }
+
+    /* Interrupteur (mêmes styles que /admin) */
+    .admin-actu .setting-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 24px;
+        border-radius: var(--border-radius);
+        background-color: var(--color-background);
+        cursor: pointer;
+    }
+
+    .admin-actu .setting-label {
+        font-weight: 600;
+    }
+
+    .admin-actu .setting-hint {
+        font-size: 14px;
+        color: var(--color-body40W);
+    }
+
+    .admin-actu .switch {
+        position: relative;
+        flex-shrink: 0;
+        display: inline-block;
+        width: 44px;
+        height: 24px;
+    }
+
+    .admin-actu .switch input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .admin-actu .switch-track {
+        position: absolute;
+        inset: 0;
+        background-color: var(--color-body40W);
+        border-radius: 999px;
+        transition: background-color 0.2s ease;
+    }
+
+    .admin-actu .switch-track::before {
+        content: "";
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        top: 3px;
+        background-color: var(--color-white);
+        border-radius: 50%;
+        transition: transform 0.2s ease;
+    }
+
+    .admin-actu .switch input:checked + .switch-track {
+        background-color: var(--color-primary);
+    }
+
+    .admin-actu .switch input:checked + .switch-track::before {
+        transform: translateX(20px);
+    }
+</style>
+
+<script>
+    import { doc, getDoc, setDoc } from "firebase/firestore";
+    import { db } from "../../lib/firebase.js";
+    import { uploadImage } from "../../lib/cloudinary.js";
+    import { requireAdminSession } from "../../lib/adminAuth.js";
+
+    const panel = document.querySelector<HTMLElement>("#actu-panel")!;
+    const toggle = document.querySelector<HTMLInputElement>("#actu-toggle")!;
+    const form = document.querySelector<HTMLFormElement>("#actu-form")!;
+    const submitButton =
+        document.querySelector<HTMLButtonElement>("#actu-submit")!;
+    const status = document.querySelector<HTMLElement>("#actu-status")!;
+    const imageCurrent =
+        document.querySelector<HTMLElement>("#actu-image-current")!;
+    const imagePreview =
+        document.querySelector<HTMLImageElement>("#actu-image-preview")!;
+    const imageRemove =
+        document.querySelector<HTMLButtonElement>("#actu-image-remove")!;
+
+    const actuRef = doc(db, "site_settings", "actu");
+    let currentImage: string | null = null;
+
+    function showImage(url: string | null) {
+        currentImage = url;
+        imageCurrent.hidden = !url;
+        if (url) imagePreview.src = url;
+    }
+
+    const session = await requireAdminSession();
+    if (session) {
+        const snapshot = await getDoc(actuRef);
+        const actu = snapshot.data() ?? {};
+
+        toggle.checked = actu.actif ?? false;
+        form.titre.value = actu.titre ?? "";
+        form.sous_titre.value = actu.sous_titre ?? "";
+        form.texte.value = actu.texte ?? "";
+        form.bouton_label.value = actu.bouton_label ?? "";
+        form.bouton_lien.value = actu.bouton_lien ?? "";
+        showImage(actu.image ?? null);
+
+        panel.hidden = false;
+    }
+
+    toggle.addEventListener("change", async () => {
+        const checked = toggle.checked;
+        try {
+            await setDoc(actuRef, { actif: checked }, { merge: true });
+        } catch (error: any) {
+            alert(error.message);
+            toggle.checked = !checked;
+        }
+    });
+
+    imageRemove.addEventListener("click", () => showImage(null));
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+
+        submitButton.disabled = true;
+        status.textContent = "Enregistrement…";
+
+        try {
+            let imageUrl = currentImage;
+            const imageFile = formData.get("image") as File;
+            if (imageFile && imageFile.size > 0) {
+                if (!["image/jpeg", "image/png"].includes(imageFile.type)) {
+                    throw new Error("L'image doit être au format JPG ou PNG.");
+                }
+                imageUrl = await uploadImage(imageFile, "actu");
+            }
+
+            await setDoc(
+                actuRef,
+                {
+                    titre: formData.get("titre"),
+                    sous_titre: formData.get("sous_titre") || null,
+                    texte: formData.get("texte") || null,
+                    bouton_label: formData.get("bouton_label") || null,
+                    bouton_lien: formData.get("bouton_lien") || null,
+                    image: imageUrl,
+                },
+                { merge: true },
+            );
+
+            showImage(imageUrl);
+            form.image.value = "";
+            status.textContent = "Enregistré ✓";
+        } catch (error: any) {
+            status.textContent = "";
+            alert(error.message);
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
+</script>

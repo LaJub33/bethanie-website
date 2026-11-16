@@ -4,12 +4,16 @@ import SellDisplay from "../components/SellDisplay.astro";
 import Newsletter from "../components/Newsletter.astro";
 import ContactBanner from "../components/ContactBanner.astro";
 import NotificationBanner from "../components/NotificationBanner.astro";
+import ActuPopup from "../components/ActuPopup.astro";
 ---
 
 <Layout title="Accueil">
     <div class="wrapper">
         <!-- Bandeau notification prochain évènement -->
         <NotificationBanner />
+
+        <!-- Popup "L'actu de la Béthanie" -->
+        <ActuPopup />
 
         <!-- Hero Section -->
         <section class="hero">
@@ -227,7 +231,7 @@ import NotificationBanner from "../components/NotificationBanner.astro";
         setTimeout(() => {
             readyToShow = true;
             updateFloatingButton();
-        }, 1000);
+        }, 500);
     });
 
     const bethanieVideo =
