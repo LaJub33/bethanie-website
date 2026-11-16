@@ -350,15 +350,18 @@
     function ouvrir() {
         overlay.hidden = false;
         document.body.style.overflow = "hidden";
-        requestAnimationFrame(() => overlay.classList.add("visible"));
-        closeButton.focus({ preventScroll: true });
+        // Force le calcul du style avant d'ajouter la classe, pour que le
+        // fondu se joue sans dépendre de requestAnimationFrame
+        void overlay.offsetWidth;
+        overlay.classList.add("visible");
+        closeButton.focus({ preventScroll: true, focusVisible: false } as FocusOptions);
         document.addEventListener("keydown", onKeydown);
     }
 
     function fermer() {
         memoriserFermeture();
         reduit.hidden = false;
-        reduit.focus({ preventScroll: true });
+        reduit.focus({ preventScroll: true, focusVisible: false } as FocusOptions);
         overlay.classList.remove("visible");
         document.body.style.overflow = "";
         document.removeEventListener("keydown", onKeydown);

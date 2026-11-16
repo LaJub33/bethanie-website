@@ -6,7 +6,12 @@ import Layout from "../../layouts/Layout.astro";
     <div class="wrapper">
         <section class="admin-home" hidden>
             <div class="header-row">
-                <h1>Administration</h1>
+                <div class="title-group">
+                    <h1>Administration</h1>
+                    <span id="backend-status" class="chip chip-checking"
+                        >Vérification…</span
+                    >
+                </div>
                 <div id="logged-in-as">
                     <p>Connecté en tant que <strong id="admin-email"></strong></p>
                     <button type="button" id="logout-button">Se déconnecter</button>
@@ -61,6 +66,37 @@ import Layout from "../../layouts/Layout.astro";
         justify-content: space-between;
         gap: 12px;
         flex-wrap: wrap;
+    }
+
+    .admin-home .title-group {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .chip {
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .chip-checking {
+        background-color: var(--color-body40W);
+        color: var(--color-white);
+    }
+
+    .chip-online {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+    }
+
+    .chip-offline {
+        background-color: #c0392b;
+        color: var(--color-white);
     }
 
     .admin-home #logged-in-as {
@@ -189,12 +225,31 @@ import Layout from "../../layouts/Layout.astro";
     const bandeauToggle =
         document.querySelector<HTMLInputElement>("#bandeau-toggle")!;
 
+    const backendStatus =
+        document.querySelector<HTMLElement>("#backend-status")!;
+
     const settingsRef = doc(db, "site_settings", "main");
+
+    async function checkBackendStatus() {
+        const timeout = new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error("timeout")), 5000),
+        );
+
+        try {
+            await Promise.race([getDoc(settingsRef), timeout]);
+            backendStatus.textContent = "Firebase actif";
+            backendStatus.className = "chip chip-online";
+        } catch {
+            backendStatus.textContent = "Firebase injoignable";
+            backendStatus.className = "chip chip-offline";
+        }
+    }
 
     const session = await requireAdminSession();
     if (session) {
         adminEmail.textContent = session.email ?? "";
         adminHome.hidden = false;
+        checkBackendStatus();
 
         const settings = await getDoc(settingsRef);
         bandeauToggle.checked = settings.data()?.bandeau_evenement_actif ?? false;

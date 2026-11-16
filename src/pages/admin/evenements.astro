@@ -9,24 +9,10 @@ import Layout from "../../layouts/Layout.astro";
                 <a href="/admin" class="back-link"
                     ><i class="ph ph-arrow-left"></i> Administration</a
                 >
-                <span id="backend-status" class="chip chip-checking"
-                    >Vérification…</span
-                >
             </div>
 
             <div id="admin-panel" hidden>
-                <div id="logged-in-as">
-                    <h1>Administration des évènements</h1>
-                    <div>
-                        <span
-                            >Connecté en tant que <strong id="admin-email"
-                            ></strong></span
-                        >
-                        <button type="button" id="logout-button"
-                            >Se déconnecter</button
-                        >
-                    </div>
-                </div>
+                <h1>Administration des évènements</h1>
 
                 <div class="admin-section">
                     <h2>Évènements à venir</h2>
@@ -139,29 +125,6 @@ import Layout from "../../layouts/Layout.astro";
         color: var(--color-body);
     }
 
-    .chip {
-        padding: 4px 12px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
-
-    .chip-checking {
-        background-color: var(--color-body40W);
-        color: var(--color-white);
-    }
-
-    .chip-online {
-        background-color: var(--color-primary);
-        color: var(--color-white);
-    }
-
-    .chip-offline {
-        background-color: #c0392b;
-        color: var(--color-white);
-    }
-
     #admin-panel {
         display: flex;
         flex-direction: column;
@@ -177,20 +140,6 @@ import Layout from "../../layouts/Layout.astro";
     #add-event-form:not([hidden]) {
         display: flex;
         flex-direction: column;
-        gap: 12px;
-    }
-
-    #logged-in-as {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-
-    #logged-in-as > div {
-        display: flex;
-        align-items: center;
         gap: 12px;
     }
 
@@ -265,7 +214,6 @@ import Layout from "../../layouts/Layout.astro";
 </style>
 
 <script>
-    import { signOut } from "firebase/auth";
     import {
         addDoc,
         collection,
@@ -276,21 +224,16 @@ import Layout from "../../layouts/Layout.astro";
         query,
         updateDoc,
     } from "firebase/firestore";
-    import { auth, db } from "../../lib/firebase.js";
+    import { db } from "../../lib/firebase.js";
     import { uploadImage } from "../../lib/cloudinary.js";
     import { requireAdminSession } from "../../lib/adminAuth.js";
 
     const adminPanel = document.querySelector<HTMLElement>("#admin-panel")!;
-    const adminEmail = document.querySelector<HTMLElement>("#admin-email")!;
     const eventsList = document.querySelector<HTMLElement>("#events-list")!;
     const pastEventsList =
         document.querySelector<HTMLElement>("#past-events-list")!;
     const addEventForm =
         document.querySelector<HTMLFormElement>("#add-event-form")!;
-    const logoutButton =
-        document.querySelector<HTMLButtonElement>("#logout-button")!;
-    const backendStatus =
-        document.querySelector<HTMLElement>("#backend-status")!;
     const eventsCollection = collection(db, "evenements");
     const eventFormTitle =
         document.querySelector<HTMLElement>("#event-form-title")!;
@@ -338,24 +281,6 @@ import Layout from "../../layouts/Layout.astro";
 
         addEventForm.scrollIntoView({ behavior: "smooth" });
     }
-
-    async function checkBackendStatus() {
-        const timeout = new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error("timeout")), 5000),
-        );
-
-        try {
-            await Promise.race([getDocs(eventsCollection), timeout]);
-
-            backendStatus.textContent = "Firebase actif";
-            backendStatus.className = "chip chip-online";
-        } catch {
-            backendStatus.textContent = "Firebase injoignable";
-            backendStatus.className = "chip chip-offline";
-        }
-    }
-
-    checkBackendStatus();
 
     function renderEventRow(evenement: any) {
         const row = document.createElement("div");
@@ -437,7 +362,6 @@ import Layout from "../../layouts/Layout.astro";
     const session = await requireAdminSession();
     if (session) {
         adminPanel.hidden = false;
-        adminEmail.textContent = session.email ?? "";
         loadEvents();
     }
 
@@ -490,9 +414,4 @@ import Layout from "../../layouts/Layout.astro";
     });
 
     cancelEditButton.addEventListener("click", () => resetForm());
-
-    logoutButton.addEventListener("click", async () => {
-        await signOut(auth);
-        window.location.href = "/admin/login";
-    });
 </script>
